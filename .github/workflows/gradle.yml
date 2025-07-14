@@ -13,60 +13,57 @@ jobs:
       contents: read
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
-      
-    - name: Build with Gradle (skip JavaFX tests)
-      run: ./gradlew build -x test
-      
-    - name: Run unit tests (non-JavaFX only)
-      run: ./gradlew test --tests "*Test" || echo "No unit tests found yet"
-      
-    - name: Generate build report
-      run: ./gradlew check || echo "Check completed with warnings"
-      
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: build-reports
-        path: |
-          build/reports/
-          build/test-results/
-        retention-days: 7
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle (skip JavaFX tests)
+        run: ./gradlew build -x test
+
+      - name: Run unit tests (non-JavaFX only)
+        run: ./gradlew test --tests "*Test" || echo "No unit tests found yet"
+
+      - name: Generate build report
+        run: ./gradlew check || echo "Check completed with warnings"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-reports
+          path: |
+            build/reports/
+            build/test-results/
+          retention-days: 7
 
   code-quality:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-      
-    - name: Check code formatting
-      run: ./gradlew check || echo "Code quality check completed"
-      
-    - name: Generate dependency report
-      uses: gradle/actions/dependency-submission@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Check code formatting
+        run: ./gradlew check || echo "Code quality check completed"
