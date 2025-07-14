@@ -1,0 +1,8 @@
+{
+  "ingredients": [
+    {"name": "Coffee Beans", "quantity": 1000, "unit": "grams"},
+    {"name": "Milk", "quantity": 2000, "unit": "ml"},
+    {"name": "Flour", "quantity": 500, "unit": "grams"},
+    {"name": "Chocolate", "quantity": 200, "unit": "grams"}
+  ]
+}
