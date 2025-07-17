@@ -1,13 +1,18 @@
 package com.brewandbite.max;
 
-public class Pastry extends MenuItem {
-    public Pastry(float price, String itemName) {
-        super(price, itemName);
+public abstract class Pastry extends MenuItem {
+
+    protected Pastry(int id,
+            String name,
+            double basePrice,
+            String description) {
+        super(id, name, basePrice, description);
+
     }
 
     @Override
-    float calculatePrice() {
-        float totalPrice = this.price;
-        return totalPrice;
+    public double calculatePrice() {
+        return getBasePrice();
     }
+
 }

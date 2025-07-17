@@ -6,11 +6,11 @@ plugins {
 group = 'com.brewandbite'
 version = '1.0-SNAPSHOT'
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
+// java {
+//     toolchain {
+//         languageVersion = JavaLanguageVersion.of(21)
+//     }
+// }
 
 repositories {
     mavenCentral()
@@ -28,7 +28,7 @@ dependencies {
 
 javafx {
     version = '21'
-    modules = ['javafx.controls', 'javafx.fxml']
+    modules = ['javafx.controls', 'javafx.fxml','javafx.graphics']
 }
 
 application {
