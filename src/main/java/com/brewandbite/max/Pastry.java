@@ -1,5 +1,7 @@
 package com.brewandbite.max;
 
+import com.brewandbite.model.MenuItem;
+
 public abstract class Pastry extends MenuItem {
 
     protected Pastry(int id,

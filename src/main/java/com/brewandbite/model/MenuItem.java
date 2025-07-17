@@ -1,4 +1,4 @@
-package com.brewandbite.max;
+package com.brewandbite.model;
 
 public abstract class MenuItem {
 
