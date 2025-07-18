@@ -1,0 +1,17 @@
+{
+  "beverages": [
+    {
+      "name": "Latte",
+      "basePrice": 4.5,
+      "description": "Espresso with milk",
+      "sizes": ["Small", "Medium", "Large"]
+    }
+  ],
+  "pastries": [
+    {
+      "name": "Blueberry Muffin",
+      "basePrice": 2.0,
+      "description": "Muffin with blueberries"
+    }
+  ]
+}
