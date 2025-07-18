@@ -1,5 +1,5 @@
 
-import com.brewandbite.model.Order;
+import com.brewandbite.model.orders.Order;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

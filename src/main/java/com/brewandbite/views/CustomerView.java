@@ -1,5 +1,5 @@
 
-import com.brewandbite.model.MenuItem;
+import com.brewandbite.model.items.MenuItem;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
