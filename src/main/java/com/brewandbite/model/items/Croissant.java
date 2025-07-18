@@ -1,4 +1,4 @@
-package com.brewandbite.max;
+package com.brewandbite.model.items;
 
 public class Croissant extends Pastry {
 
