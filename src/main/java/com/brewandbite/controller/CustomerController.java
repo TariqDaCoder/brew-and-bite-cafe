@@ -1,7 +1,5 @@
 package com.brewandbite.controller;
 
-// import com.brewandbite.service.InMemoryQueue;
-
 import java.util.List;
 
 import com.brewandbite.model.items.MenuItem;
@@ -13,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class CustomerController {
+
     private final CustomerView view;
     private final ObservableList<MenuItem> menuItems;
     private final ObservableList<MenuItem> cartItems = FXCollections.observableArrayList();
@@ -20,44 +19,68 @@ public class CustomerController {
     private int nextOrderId = 1;
 
     public CustomerController(CustomerView view,
-                              List<MenuItem> menu,
-                              InMemoryQueue<Order> queue) {
+            List<MenuItem> menu,
+            InMemoryQueue<Order> queue) {
         this.view = view;
         this.menuItems = FXCollections.observableArrayList(menu);
         this.orderQueue = queue;
     }
 
- public void initialize() {
-    // Populate menu and cart list views
+    public void initialize() {
+        // 1) Populate menu & cart
         view.menuList.setItems(menuItems);
         view.cartList.setItems(cartItems);
 
-// When placeorder is pressed, add that selection to cart
+        // 2) Place Order → add selected item to cart
         view.placeOrder.setOnAction(e -> {
-            MenuItem sel = view.menuList.getSelectionModel().getSelectedItem();
-            if (sel != null) cartItems.add(sel);
+            try {
+                MenuItem sel = view.menuList.getSelectionModel().getSelectedItem();
+                if (sel != null) {
+                    cartItems.add(sel);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
 
-        view.clearOrder.setOnAction(e -> cartItems.clear()); // empty cart
+        // 3) Clear Order → empty the cart
+        view.clearOrder.setOnAction(e -> {
+            try {
+                cartItems.clear();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
 
-         view.submitOrder.setOnAction(e -> submitOrder());
+        // 4) Submit Order → build, enqueue, clear UI
+        view.submitOrder.setOnAction(e -> {
+            try {
+                submitOrder();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
-    // Expand on this submit order function - currently bare bones 
     private void submitOrder() {
-               if (cartItems.isEmpty() || view.nameField.getText().isBlank()) {
-            // show an error label here instead of nothing
-            return;
+        try {
+            if (cartItems.isEmpty() || view.nameField.getText().isBlank()) {
+                // Optionally show an error label here
+                return;
+            }
+
+            // Build and enqueue the order
+            Order order = new Order(nextOrderId++, view.nameField.getText().trim());
+            cartItems.forEach(order::addItem);
+            orderQueue.enqueue(order);
+
+            // Reset UI
+            cartItems.clear();
+            view.nameField.clear();
+
+        } catch (Exception ex) {
+            // Catch any unexpected errors during order submission
+            ex.printStackTrace();
         }
-        // Build the Order
-        Order order = new Order(nextOrderId++, view.nameField.getText().trim());
-        cartItems.forEach(order::addItem);
-
-        // Put order in queue to workers
-        orderQueue.enqueue(order);
-
-        // clear cart and name field
-        cartItems.clear();
-        view.nameField.clear(); 
     }
 }

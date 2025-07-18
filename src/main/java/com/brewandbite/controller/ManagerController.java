@@ -4,8 +4,9 @@ import java.util.List;
 
 import com.brewandbite.model.inventory.Ingredient;
 import com.brewandbite.model.items.MenuItem;
-import com.brewandbite.util.JsonRepository;
+import com.brewandbite.util.DataManager;
 import com.brewandbite.views.ManagerView;
+import com.google.gson.reflect.TypeToken;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,33 +19,20 @@ public class ManagerController {
     private final ManagerView view;
     private final ObservableList<MenuItem> menu;
     private final ObservableList<Ingredient> inventory;
-    private final JsonRepository<MenuItem> menuRepo;
-    private final JsonRepository<Ingredient> invRepo;
+    private static final String MENU_JSON = "menu.json";
+    private static final String INVENTORY_JSON = "inventory.json";
 
     public ManagerController(ManagerView view) {
         this.view = view;
-        this.menuRepo = new JsonRepository<>(MenuItem.class);
-        this.invRepo = new JsonRepository<>(Ingredient.class);
 
-        // Load data with exception handling
-        ObservableList<MenuItem> tempMenu;
-        ObservableList<Ingredient> tempInv;
-        try {
-            List<MenuItem> loadedMenu = menuRepo.load("data/menu.json");
-            tempMenu = FXCollections.observableArrayList(loadedMenu);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            tempMenu = FXCollections.observableArrayList();
-        }
-        try {
-            List<Ingredient> loadedInv = invRepo.load("data/inventory.json");
-            tempInv = FXCollections.observableArrayList(loadedInv);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            tempInv = FXCollections.observableArrayList();
-        }
-        this.menu = tempMenu;
-        this.inventory = tempInv;
+        // Load menu and inventory from JSON via DataManager
+        List<MenuItem> loadedMenu = DataManager.loadFromJson(MENU_JSON, new TypeToken<List<MenuItem>>() {
+        });
+        List<Ingredient> loadedInv = DataManager.loadFromJson(INVENTORY_JSON, new TypeToken<List<Ingredient>>() {
+        });
+        this.menu = FXCollections.observableArrayList(loadedMenu);
+        this.inventory = FXCollections.observableArrayList(loadedInv);
+
     }
 
     /**
@@ -58,7 +46,6 @@ public class ManagerController {
             try {
                 // TODO: Show dialog to add new MenuItem, then:
                 // menu.add(newItem);
-                // menuRepo.save("data/menu.json", menu);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -69,7 +56,7 @@ public class ManagerController {
                 MenuItem sel = view.menuEditor.getSelectionModel().getSelectedItem();
                 if (sel != null) {
                     menu.remove(sel);
-                    menuRepo.save("data/menu.json", menu);
+                    DataManager.saveToJson("MENU_JSON", menu);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -83,7 +70,7 @@ public class ManagerController {
                     ingredient.addStock(5);
                 }
                 view.inventoryList.refresh();
-                invRepo.save("data/inventory.json", inventory);
+                DataManager.saveToJson("INVENTORY_JSON", inventory);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
