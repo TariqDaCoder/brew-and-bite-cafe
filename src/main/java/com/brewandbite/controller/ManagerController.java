@@ -64,6 +64,7 @@ public class ManagerController {
         });
 
         // Restock selected ingredient and save inventory
+        // TODO expand on this 
         view.restockBtn.setOnAction(e -> {
             try {
                 Ingredient ingredient = view.inventoryList.getSelectionModel().getSelectedItem();
