@@ -1,3 +1,4 @@
+package com.brewandbite.views;
 
 import com.brewandbite.model.inventory.Ingredient;
 import com.brewandbite.model.items.MenuItem;

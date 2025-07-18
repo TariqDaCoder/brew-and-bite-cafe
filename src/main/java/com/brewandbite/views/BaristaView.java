@@ -1,3 +1,4 @@
+package com.brewandbite.views;
 
 import com.brewandbite.model.orders.Order;
 

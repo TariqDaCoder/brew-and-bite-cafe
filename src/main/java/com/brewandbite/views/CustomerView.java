@@ -1,3 +1,4 @@
+package com.brewandbite.views;
 
 import com.brewandbite.model.items.MenuItem;
 
@@ -13,9 +14,10 @@ public class CustomerView extends VBox {
 
     public final ListView<MenuItem> menuList = new ListView<>();
     public final ListView<MenuItem> cartList = new ListView<>();
-    public final Button placeOrder = new Button("Place Order");
+    public final Button placeOrder = new Button("Place Order"); // Move items into cartlist, not actually submit it
+    public final Button submitOrder = new Button("Submit Order"); // submit orders in cart list to workers (Before submiting order and sending it to workers, you would call a third party payment api to handle transaction payments and if successful, sumbmission of order is confirmed and then ask if order to be printed, text, or email to customers before sending their order to baristas to make )
     public final Button clearOrder = new Button("Clear Order");
-    public final HBox orderButtons = new HBox(10, placeOrder, clearOrder);
+    public final HBox orderButtons = new HBox(10, placeOrder, submitOrder, clearOrder);
     public final TextField nameField = new TextField();
     private static final String CUSTOMER_NAME_LABEL = "Customer Name:";
     private static final String MENU_LABEL = "Menu";

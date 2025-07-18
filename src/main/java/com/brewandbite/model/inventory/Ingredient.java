@@ -4,6 +4,7 @@ public class Ingredient {
 
     private String name;
     private int quantity;
+    // TODO: Create a specific type for unit instead of using generic "String" type
     private String unit; // "grams", "ml", "pieces"
 
     public String getName() {
@@ -32,6 +33,10 @@ public class Ingredient {
 
     public void reduceQuantity(int amount) {
         this.quantity = this.quantity - amount;
+    }
+
+    public void addStock(int amountToAdd) {
+        this.quantity += amountToAdd;
     }
 
     @Override
