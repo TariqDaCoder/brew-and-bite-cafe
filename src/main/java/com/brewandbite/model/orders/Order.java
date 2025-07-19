@@ -1,10 +1,13 @@
-package com.brewandbite.model;
+package com.brewandbite.model.orders;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.brewandbite.model.items.MenuItem;
+
 public class Order {
+
     private int orderId;
     private String customerName;
     private List<MenuItem> items;
@@ -26,7 +29,6 @@ public class Order {
     }
 
     // Constructor, getters, setters
-
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
@@ -87,21 +89,21 @@ public class Order {
     }
 
     public enum OrderStatus {
-        PENDING,        // Just placed, waiting for barista
-        IN_PROGRESS,    // Barista is working on it
-        READY,          // Ready for customer pickup
+        PENDING, // Just placed, waiting for barista
+        IN_PROGRESS, // Barista is working on it
+        READY, // Ready for customer pickup
         COMPLETED       // Customer has picked up
     }
 
     @Override
     public String toString() {
-        return "Order{" +
-                "customerName='" + customerName + '\'' +
-                ", orderId=" + orderId +
-                ", items=" + items +
-                ", totalPrice=" + totalPrice +
-                ", orderTime=" + orderTime +
-                ", status=" + status +
-                '}';
+        return "Order{"
+                + "customerName='" + customerName + '\''
+                + ", orderId=" + orderId
+                + ", items=" + items
+                + ", totalPrice=" + totalPrice
+                + ", orderTime=" + orderTime
+                + ", status=" + status
+                + '}';
     }
 }

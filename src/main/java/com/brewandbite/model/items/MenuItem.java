@@ -1,4 +1,4 @@
-package com.brewandbite.model;
+package com.brewandbite.model.items;
 
 public abstract class MenuItem {
 

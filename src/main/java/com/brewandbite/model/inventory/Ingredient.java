@@ -1,10 +1,11 @@
-package com.brewandbite.model;
+package com.brewandbite.model.inventory;
 
 public class Ingredient {
+
     private String name;
     private int quantity;
+    // TODO: Create a specific type for unit instead of using generic "String" type
     private String unit; // "grams", "ml", "pieces"
-
 
     public String getName() {
         return name;
@@ -30,17 +31,20 @@ public class Ingredient {
         this.unit = unit;
     }
 
-
-    public void reduceQuantity(int amount){
+    public void reduceQuantity(int amount) {
         this.quantity = this.quantity - amount;
+    }
+
+    public void addStock(int amountToAdd) {
+        this.quantity += amountToAdd;
     }
 
     @Override
     public String toString() {
-        return "Ingredient{" +
-                "name='" + name + '\'' +
-                ", quantity=" + quantity +
-                ", unit='" + unit + '\'' +
-                '}';
+        return "Ingredient{"
+                + "name='" + name + '\''
+                + ", quantity=" + quantity
+                + ", unit='" + unit + '\''
+                + '}';
     }
 }
