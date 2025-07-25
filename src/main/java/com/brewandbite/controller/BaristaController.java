@@ -22,7 +22,7 @@ public class BaristaController {
         // Initialize the list with current queue contents
         this.pending = FXCollections.observableArrayList();
         try {
-            pending.setAll(queue.all());
+            pending.setAll(queue.getAll(false));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -36,7 +36,7 @@ public class BaristaController {
 
         view.refreshBtn.setOnAction(e -> {
             try {
-                pending.setAll(queue.all());
+                pending.setAll(queue.getAll(false));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
