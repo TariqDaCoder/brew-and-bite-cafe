@@ -84,8 +84,7 @@ public class DataManager {
                     nextId++,
                     b.name,
                     b.basePrice,
-                    b.description,
-                    Beverage.DrinkSize.SMALL // or parse b.sizes.get(1) into the enum
+                    b.description
             );
             flat.add(bev);
         }

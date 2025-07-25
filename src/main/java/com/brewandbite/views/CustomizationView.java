@@ -15,14 +15,14 @@ import javafx.scene.layout.VBox;
 public class CustomizationView extends VBox {
     public Scene customerView;
     public Beverage selectedBeverage;
+    public final ListView<Beverage.Customization> possibleItemCustomizations = new ListView<>();
     public final ListView<MenuItem> selectedItem = new ListView<>();
-    public final ListView<Beverage.CustomizationType> possibleItemCustomizations = new ListView<>();
     public final Button addCustomizationToItem = new Button("Add Customization");
     public final Button removeCustomizationFromItem = new Button("Remove Customization from Item");
     public final Button backToOrder = new Button("Back To Order"); // Move items into cartlist, not actually submit it
     public final HBox customizationButtons = new HBox(10, addCustomizationToItem, removeCustomizationFromItem, backToOrder);
-    private static final String SELECTED_ITEM_LABEL = "Your Item";
     private static final String CUSTOMIZATION_MENU_LABEL = "Customizations";
+    private static final String SELECTED_ITEM_LABEL = "Your Item";
 
     public CustomizationView() {
         //wire up the controller to this view
@@ -32,11 +32,11 @@ public class CustomizationView extends VBox {
         setSpacing(15);
         setPadding(new Insets(10));
 
-        Label selectedItemLabel = new Label(SELECTED_ITEM_LABEL);
         Label customizationLabel = new Label(CUSTOMIZATION_MENU_LABEL);
+        Label selectedItemLabel = new Label(SELECTED_ITEM_LABEL);
 
         //initialize the list of possible customizations
-        for (Beverage.CustomizationType customization : Beverage.CustomizationType.values()) {
+        for (Beverage.Customization customization : Beverage.Customization.values()) {
             possibleItemCustomizations.getItems().add(customization);
         }
 
@@ -54,9 +54,9 @@ public class CustomizationView extends VBox {
             }
         });
         
-        this.possibleItemCustomizations.setCellFactory(param -> new ListCell<Beverage.CustomizationType>() {
+        this.possibleItemCustomizations.setCellFactory(param -> new ListCell<Beverage.Customization>() {
             @Override
-            protected void updateItem(Beverage.CustomizationType customization, boolean empty) {
+            protected void updateItem(Beverage.Customization customization, boolean empty) {
                     super.updateItem(customization, empty);
                     if (empty || customization == null || customization.toString() == null) {
                         setText(null);

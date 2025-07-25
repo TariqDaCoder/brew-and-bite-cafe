@@ -13,7 +13,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class CustomerView extends VBox {
-
     public final ListView<MenuItem> menuList = new ListView<>();
     public final ListView<MenuItem> cartList = new ListView<>();
     public final Button addToOrder = new Button("Add To Order"); // Move items into cartlist, not actually submit it

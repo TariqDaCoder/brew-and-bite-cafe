@@ -11,14 +11,14 @@ public class CustomizationController {
         this.customizationView = customizationView;
     }
 
-    public void addCustomization(Beverage.CustomizationType selectedCustomization) {
+    public void addCustomization(Beverage.Customization selectedCustomization) {
         //Beverages are the only customizable thing in our system.
         //Should be sufficent for our purposes
         customizationView.selectedBeverage.addCustomization(selectedCustomization);
         customizationView.selectedItem.getItems().set(0, customizationView.selectedBeverage);
     }
 
-    public void removeCustomization(Beverage.CustomizationType selectedCustomization) {
+    public void removeCustomization(Beverage.Customization selectedCustomization) {
         customizationView.selectedBeverage.removeCustomization(selectedCustomization);
         customizationView.selectedItem.getItems().set(0, customizationView.selectedBeverage);
     }
@@ -28,7 +28,7 @@ public class CustomizationController {
         customizationView.addCustomizationToItem.setOnAction(e -> {
             try {
                 int selectionIndex = customizationView.possibleItemCustomizations.getSelectionModel().getSelectedIndex();
-                Beverage.CustomizationType selectedCustomization = customizationView.possibleItemCustomizations.getItems().get(selectionIndex);
+                Beverage.Customization selectedCustomization = customizationView.possibleItemCustomizations.getItems().get(selectionIndex);
                 if (selectedCustomization != null) {
                     addCustomization(selectedCustomization);
                 }
@@ -39,9 +39,8 @@ public class CustomizationController {
 
         customizationView.removeCustomizationFromItem.setOnAction(e -> {
             try {
-                //MenuItem sel = new Cookie(1, null);
                 int selectionIndex = customizationView.possibleItemCustomizations.getSelectionModel().getSelectedIndex();
-                Beverage.CustomizationType selectedCustomization = customizationView.possibleItemCustomizations.getItems().get(selectionIndex);
+                Beverage.Customization selectedCustomization = customizationView.possibleItemCustomizations.getItems().get(selectionIndex);
                 if (selectedCustomization != null) {
                     removeCustomization(selectedCustomization);
                 }
@@ -52,6 +51,9 @@ public class CustomizationController {
 
         customizationView.backToOrder.setOnAction(e -> {
             try {
+                //update 
+                // customizationView.
+
                 //return to the customer view
                 Stage currentStage = (Stage)((Node) e.getSource()).getScene().getWindow();
                 currentStage.setScene(customizationView.customerView);
