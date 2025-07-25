@@ -44,17 +44,19 @@ public class InMemoryQueue<T> extends Observable<List<T>> {
         return item;
     }
 
-    public List<T> getAll() {
-        return List.copyOf(queue);
-    }
-
     /**
-     * Peek at all items currently in the queue without removing them.
+     * Returns a list of all items currently in the queue. If immutable is true,
+     * returns an unmodifiable list; otherwise, returns a mutable copy.
      *
+     * @param immutable whether the returned list should be immutable
      * @return a list of the queued items, in FIFO order
      */
-    public List<T> all() {
-        return new ArrayList<>(queue);
+    public List<T> getAll(boolean immutable) {
+        if (immutable) {
+            return List.copyOf(queue);
+        } else {
+            return new ArrayList<>(queue);
+        }
     }
 
     /**
