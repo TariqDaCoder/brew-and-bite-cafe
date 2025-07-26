@@ -7,13 +7,16 @@ import java.util.List;
 
 /**
  * A simple in-memory FIFO queue for any type of item. Useful for sharing orders
- * between CustomerController and BaristaController.
+ * between CustomerController and BaristaController. This is an observable
+ * queue, which means we can notify when items are added or removed. AKA State
+ * management.
  *
  * @param <T> the type of elements in the queue
  */
-public class InMemoryQueue<T> {
+public class InMemoryQueue<T> extends Observable<List<T>> {
 
-    private final Deque<T> buffer = new ArrayDeque<>();
+
+    private final Deque<T> queue = new ArrayDeque<>();
 
     /**
      * Enqueue an item at the end of the queue (new orders go here).
@@ -21,7 +24,8 @@ public class InMemoryQueue<T> {
      * @param item the element to enqueue
      */
     public void enqueue(T item) {
-        buffer.addLast(item);
+        queue.addLast(item);
+        notifyObservers(List.copyOf(queue));
     }
 
     /**
@@ -30,16 +34,30 @@ public class InMemoryQueue<T> {
      * @return the head of the queue, or null if the queue is empty
      */
     public T dequeue() {
-        return buffer.pollFirst();
+        if (queue.isEmpty()) {
+            return null;
+        }
+
+        T item = queue.removeFirst();
+
+        notifyObservers(List.copyOf(queue));
+
+        return item;
     }
 
     /**
-     * Peek at all items currently in the queue without removing them.
+     * Returns a list of all items currently in the queue. If immutable is true,
+     * returns an unmodifiable list; otherwise, returns a mutable copy.
      *
+     * @param immutable whether the returned list should be immutable
      * @return a list of the queued items, in FIFO order
      */
-    public List<T> all() {
-        return new ArrayList<>(buffer);
+    public List<T> getAll(boolean immutable) {
+        if (immutable) {
+            return List.copyOf(queue);
+        } else {
+            return new ArrayList<>(queue);
+        }
     }
 
     /**
@@ -48,7 +66,7 @@ public class InMemoryQueue<T> {
      * @return true if empty, false otherwise
      */
     public boolean isEmpty() {
-        return buffer.isEmpty();
+        return queue.isEmpty();
     }
 
     /**
@@ -57,6 +75,6 @@ public class InMemoryQueue<T> {
      * @return the queue size
      */
     public int size() {
-        return buffer.size();
+        return queue.size();
     }
 }

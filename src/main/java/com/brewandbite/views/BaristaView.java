@@ -1,6 +1,6 @@
 package com.brewandbite.views;
 
-import com.brewandbite.model.orders.Order;
+import com.brewandbite.model.orders.ObservableOrder;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 
 public class BaristaView extends VBox {
 
-    public final ListView<Order> pendingOrders = new ListView<>();
+    public final ListView<ObservableOrder> pendingOrders = new ListView<>();
     public final Button markInProgress = new Button("In Progress");
     public final Button markReady = new Button("Ready");
     public final Button refreshBtn = new Button("Refresh");

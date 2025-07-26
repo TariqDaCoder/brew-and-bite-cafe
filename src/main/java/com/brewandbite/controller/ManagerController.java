@@ -3,8 +3,10 @@ package com.brewandbite.controller;
 import java.util.List;
 
 import com.brewandbite.model.inventory.Ingredient;
+import com.brewandbite.model.inventory.ObservableInventory;
 import com.brewandbite.model.items.MenuItem;
 import com.brewandbite.util.DataManager;
+import com.brewandbite.util.Observer;
 import com.brewandbite.views.ManagerView;
 
 import javafx.collections.FXCollections;
@@ -13,23 +15,28 @@ import javafx.collections.ObservableList;
 /**
  * Controller for manager to oversee menu and inventory.
  */
-public class ManagerController {
+public class ManagerController implements Observer<List<Ingredient>> {
 
     private final ManagerView view;
     private final ObservableList<MenuItem> menu;
-    private final ObservableList<Ingredient> inventory;
+    private final ObservableInventory inventory;
     private static final String MENU_JSON = "menu.json";
     private static final String INVENTORY_JSON = "inventory.json";
 
-    public ManagerController(ManagerView view) {
+    public ManagerController(ManagerView view, ObservableInventory inventory) {
         this.view = view;
+        this.inventory = inventory;
+        inventory.addObserver(this);
 
-        // Load menu and inventory from JSON via DataManager
+        // Load menu from JSON via DataManager
         List<MenuItem> loadedMenu = DataManager.loadAllMenuItems();
-        List<Ingredient> loadedInv = DataManager.loadAllIngredients();
         this.menu = FXCollections.observableArrayList(loadedMenu);
-        this.inventory = FXCollections.observableArrayList(loadedInv);
+    }
 
+    @Override
+    public void update(List<Ingredient> updatedInventory) {
+        view.inventoryList.getItems().setAll(updatedInventory);
+        view.inventoryList.refresh();
     }
 
     /**
@@ -37,7 +44,7 @@ public class ManagerController {
      */
     public void initialize() {
         view.menuEditor.setItems(menu);
-        view.inventoryList.setItems(inventory);
+        view.inventoryList.setItems(FXCollections.observableArrayList(inventory.getAllIngredients()));
 
         // Add a new menu item and save
         view.addItem.setOnAction(e -> {
@@ -64,15 +71,13 @@ public class ManagerController {
         });
 
         // Restock selected ingredient and save inventory
-        // TODO expand on this 
         view.restockBtn.setOnAction(e -> {
             try {
                 Ingredient ingredient = view.inventoryList.getSelectionModel().getSelectedItem();
                 if (ingredient != null) {
-                    ingredient.addStock(5);
+                    inventory.addStock(ingredient.getName(), 5); // Use ObservableInventory method
+                    DataManager.saveToJson(INVENTORY_JSON, inventory.getAllIngredients());
                 }
-                view.inventoryList.refresh();
-                DataManager.saveToJson(INVENTORY_JSON, inventory);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

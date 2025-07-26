@@ -66,52 +66,85 @@ public class DataManager {
      * single List<MenuItem>. Returns empty list on null.
      */
     public static List<MenuItem> loadAllMenuItems() {
-        // 1) Read the raw DTO wrapper
+        // Try to load as wrapper object first
         Type dtoType = new TypeToken<MenuDataDTO>() {
         }.getType();
         MenuDataDTO dto = loadFromJson("menu.json", dtoType);
-        if (dto == null) {
-            return Collections.emptyList();
+        if (dto != null) {
+            List<MenuItem> flat = new ArrayList<>();
+            int nextId = 1;
+            for (BeverageDTO b : dto.beverages) {
+                Beverage bev = new Beverage(
+                        nextId++,
+                        b.name,
+                        b.basePrice,
+                        b.description,
+                        Beverage.DrinkSize.MEDIUM
+                );
+                flat.add(bev);
+            }
+            for (PastryDTO p : dto.pastries) {
+                MenuItem pastry;
+                if (p.name.toLowerCase().contains("croissant")) {
+                    var type = p.name.toLowerCase().contains("chocolate")
+                            ? Croissant.CroissantType.CHOCOLATE
+                            : Croissant.CroissantType.BUTTER;
+                    pastry = new Croissant(nextId++, type);
+                } else if (p.name.toLowerCase().contains("muffin")) {
+                    var type = p.name.toLowerCase().contains("blueberry")
+                            ? Muffin.MuffinType.BLUEBERRY
+                            : Muffin.MuffinType.CHOCOLATE_CHIP;
+                    pastry = new Muffin(nextId++, type);
+                } else {
+                    continue;
+                }
+                flat.add(pastry);
+            }
+            return flat;
         }
-
+        // If wrapper failed, try to load as flat arrays of DTOs and convert
         List<MenuItem> flat = new ArrayList<>();
         int nextId = 1;
-
-        // 2) Convert each BeverageDTO → your concrete Beverage subclass
-        for (BeverageDTO b : dto.beverages) {
-            // pick a default size, or you could loop sizes too
-            Beverage bev = new Beverage(
-                    nextId++,
-                    b.name,
-                    b.basePrice,
-                    b.description,
-                    Beverage.DrinkSize.MEDIUM // or parse b.sizes.get(1) into the enum
-            );
-            flat.add(bev);
-        }
-
-        // 3) Convert each PastryDTO → a specific subclass
-        for (PastryDTO p : dto.pastries) {
-            MenuItem pastry;
-            if (p.name.toLowerCase().contains("croissant")) {
-                // assume butter unless name contains "chocolate"
-                var type = p.name.toLowerCase().contains("chocolate")
-                        ? Croissant.CroissantType.CHOCOLATE
-                        : Croissant.CroissantType.BUTTER;
-                pastry = new Croissant(nextId++, type);
-            } else if (p.name.toLowerCase().contains("muffin")) {
-                var type = p.name.toLowerCase().contains("blueberry")
-                        ? Muffin.MuffinType.BLUEBERRY
-                        : Muffin.MuffinType.CHOCOLATE_CHIP;
-                pastry = new Muffin(nextId++, type);
-            } else {
-                // TODO: Add a fallback
-                return null;
+        Type beverageListType = new TypeToken<List<BeverageDTO>>() {
+        }.getType();
+        List<BeverageDTO> beverages = loadFromJson("menu.json", beverageListType);
+        if (beverages != null && !beverages.isEmpty()) {
+            for (BeverageDTO b : beverages) {
+                Beverage bev = new Beverage(
+                        nextId++,
+                        b.name,
+                        b.basePrice,
+                        b.description,
+                        Beverage.DrinkSize.MEDIUM
+                );
+                flat.add(bev);
             }
-            flat.add(pastry);
+            return flat;
         }
-
-        return flat;
+        Type pastryListType = new TypeToken<List<PastryDTO>>() {
+        }.getType();
+        List<PastryDTO> pastries = loadFromJson("menu.json", pastryListType);
+        if (pastries != null && !pastries.isEmpty()) {
+            for (PastryDTO p : pastries) {
+                MenuItem pastry;
+                if (p.name.toLowerCase().contains("croissant")) {
+                    var type = p.name.toLowerCase().contains("chocolate")
+                            ? Croissant.CroissantType.CHOCOLATE
+                            : Croissant.CroissantType.BUTTER;
+                    pastry = new Croissant(nextId++, type);
+                } else if (p.name.toLowerCase().contains("muffin")) {
+                    var type = p.name.toLowerCase().contains("blueberry")
+                            ? Muffin.MuffinType.BLUEBERRY
+                            : Muffin.MuffinType.CHOCOLATE_CHIP;
+                    pastry = new Muffin(nextId++, type);
+                } else {
+                    continue;
+                }
+                flat.add(pastry);
+            }
+            return flat;
+        }
+        return Collections.emptyList();
     }
 
     /**
@@ -119,11 +152,17 @@ public class DataManager {
      * Returns empty list on null.
      */
     public static List<Ingredient> loadAllIngredients() {
+        // Try to load as wrapper object first
         Type invType = new TypeToken<InventoryData>() {
         }.getType();
         InventoryData id = loadFromJson("inventory.json", invType);
-        return (id == null || id.ingredients == null)
-                ? emptyList()
-                : id.ingredients;
+        if (id != null && id.ingredients != null) {
+            return id.ingredients;
+        }
+        // If wrapper failed, try to load as flat array
+        Type arrayType = new TypeToken<List<Ingredient>>() {
+        }.getType();
+        List<Ingredient> ingredients = loadFromJson("inventory.json", arrayType);
+        return ingredients != null ? ingredients : emptyList();
     }
 }
