@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class InMemoryQueue<T> extends Observable<List<T>> {
 
+
     private final Deque<T> queue = new ArrayDeque<>();
 
     /**

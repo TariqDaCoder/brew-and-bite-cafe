@@ -6,9 +6,10 @@ import java.util.Optional;
 import com.brewandbite.controller.BaristaController;
 import com.brewandbite.controller.CustomerController;
 import com.brewandbite.controller.ManagerController;
-import com.brewandbite.model.inventory.Ingredient;
+import com.brewandbite.model.inventory.ObservableInventory;
 import com.brewandbite.model.items.MenuItem;
-import com.brewandbite.model.orders.Order;
+import com.brewandbite.model.items.ObservableMenu;
+import com.brewandbite.model.orders.ObservableOrder;
 import com.brewandbite.util.DataManager;
 import com.brewandbite.util.InMemoryQueue;
 import com.brewandbite.views.BaristaView;
@@ -26,10 +27,10 @@ public class BrewAndBiteApp extends Application {
     public void start(Stage primaryStage) {
         // 1) Load and flatten data
         List<MenuItem> menu = DataManager.loadAllMenuItems();
-        List<Ingredient> inventory = DataManager.loadAllIngredients();
+        ObservableInventory inventory = new ObservableInventory(DataManager.loadAllIngredients());
 
         // 2) Shared queue for orders
-        InMemoryQueue<Order> orderQueue = new InMemoryQueue<>();
+        InMemoryQueue<ObservableOrder> orderQueue = new InMemoryQueue<>();
 
         // 3) Let the user pick a role
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(
@@ -56,13 +57,14 @@ public class BrewAndBiteApp extends Application {
             }
             case "Manager" -> {
                 ManagerView mv = new ManagerView();
-                ManagerController mc = new ManagerController(mv);
+                ManagerController mc = new ManagerController(mv, inventory);
                 mc.initialize();
                 scene = new Scene(mv, 800, 600);
             }
             default -> {
                 CustomerView cv = new CustomerView();
-                CustomerController cc = new CustomerController(cv, menu, orderQueue);
+                ObservableMenu observableMenu = new ObservableMenu(DataManager.loadAllMenuItems());
+                CustomerController cc = new CustomerController(cv, observableMenu, orderQueue);
                 cc.initialize();
                 scene = new Scene(cv, 800, 600);
             }

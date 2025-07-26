@@ -1,7 +1,11 @@
 package com.brewandbite.controller;
 
+import java.util.List;
+
+import com.brewandbite.model.orders.ObservableOrder;
 import com.brewandbite.model.orders.Order;
 import com.brewandbite.util.InMemoryQueue;
+import com.brewandbite.util.Observer;
 import com.brewandbite.views.BaristaView;
 
 import javafx.collections.FXCollections;
@@ -10,27 +14,24 @@ import javafx.collections.ObservableList;
 /**
  * Controller for barista to view and update pending orders.
  */
-public class BaristaController {
+public class BaristaController implements Observer<List<ObservableOrder>> {
 
     private final BaristaView view;
-    private final InMemoryQueue<Order> queue;
-    private final ObservableList<Order> pending;
+    private final InMemoryQueue<ObservableOrder> queue;
+    private final ObservableList<ObservableOrder> pending;
 
-    public BaristaController(BaristaView view, InMemoryQueue<Order> queue) {
+    public BaristaController(BaristaView view, InMemoryQueue<ObservableOrder> queue) {
         this.view = view;
         this.queue = queue;
-        // Initialize the list with current queue contents
         this.pending = FXCollections.observableArrayList();
         try {
             pending.setAll(queue.getAll(false));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        queue.addObserver(this); // Register as observer
     }
 
-    /**
-     * Wire up UI event handlers with try-catch guards.
-     */
     public void initialize() {
         view.pendingOrders.setItems(pending);
 
@@ -59,8 +60,13 @@ public class BaristaController {
         });
     }
 
+    @Override
+    public void update(List<ObservableOrder> orders) {
+        pending.setAll(orders);
+    }
+
     private void updateStatus(Order.OrderStatus status) {
-        Order o = view.pendingOrders.getSelectionModel().getSelectedItem();
+        ObservableOrder o = view.pendingOrders.getSelectionModel().getSelectedItem();
         if (o != null) {
             o.setStatus(status);
             view.pendingOrders.refresh();
