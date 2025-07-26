@@ -1,40 +1,36 @@
 package com.brewandbite.model.items;
 
 //coffee beverage base class
-public class Coffee extends Beverage {
-    public enum CoffeeType {
-        BLACK(2.50, "A Basic Black Coffee"), 
-        LATTE(2.25, "A Latte"),
-        ESPRESSO(2.50, "A shot of espresso"),
-        CAPPUCCINO(2.50, "A Cappuccino");
+public class Tea extends Beverage {
+    public enum TeaType {
+        BLACK(2.50, "A black tea"), 
+        GREEN(2.25, "A green tea"),
+        HERBAL(2.50, "A herbal tea");
 
         @Override
         public String toString() {
-            String coffeeType = " ";
+            String teaType = " ";
             switch(this) {
                 case BLACK:
-                    coffeeType = "Black Coffee";
+                    teaType = "Black";
                 break;
-                case LATTE:
-                    coffeeType = "Latte";
+                case GREEN:
+                    teaType = "Green";
                 break;
-                case ESPRESSO:
-                    coffeeType = "Espresso";
-                break;
-                case CAPPUCCINO:
-                    coffeeType = "Cappuccino";
+                case HERBAL:
+                    teaType = "Herbal";
                 break;
                 default:
                 break;
             }
 
-            return coffeeType;
+            return teaType;
         }
         
         private final double cost;
         private final String description;
 
-        CoffeeType(double cost, String description) {
+        TeaType(double cost, String description) {
             this.cost = cost;
             this.description = description;
         }
@@ -48,9 +44,9 @@ public class Coffee extends Beverage {
         }
     }
 
-    private final CoffeeType type;
+    private final TeaType type;
 
-    public Coffee(int id, CoffeeType type) {
+    public Tea(int id, TeaType type) {
         super(
                 id,
                 // Display name
@@ -63,7 +59,7 @@ public class Coffee extends Beverage {
         this.type = type;
     }
 
-    public CoffeeType getType() {
+    public TeaType getType() {
         return this.type;
     }
 }

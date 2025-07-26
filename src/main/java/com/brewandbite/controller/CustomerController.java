@@ -4,9 +4,11 @@ import java.util.List;
 import com.brewandbite.model.items.Cookie;
 import com.brewandbite.model.items.Coffee;
 import com.brewandbite.model.items.MenuItem;
+import com.brewandbite.model.items.Coffee.CoffeeType;
 import com.brewandbite.model.items.Cookie.CookieType;
 import com.brewandbite.model.items.Beverage;
 import com.brewandbite.model.orders.Order;
+import com.brewandbite.util.Customizable;
 import com.brewandbite.util.InMemoryQueue;
 import com.brewandbite.views.CustomerView;
 import com.brewandbite.views.CustomizationView;
@@ -36,7 +38,7 @@ public class CustomerController {
 
         this.menuItems.add(new Cookie(1, CookieType.OATMEAL_RAISIN));
         this.menuItems.add(new Cookie(1, CookieType.CHOCOLATE_CHIP));
-        this.menuItems.add(new Coffee());
+        this.menuItems.add(new Coffee(1, CoffeeType.BLACK));
 
         menuItemFactory = new MenuItemFactory();
         this.orderQueue = queue;
@@ -111,10 +113,9 @@ public class CustomerController {
 
         view.customizeItem.setOnAction(e -> {
             try {
-                //MenuItem sel = view.menuList.getSelectionModel().getSelectedItem();
                 MenuItem sel = getSelectedItem(view.cartList, cartItems);
-                System.err.println(sel);
-                if (sel != null && sel instanceof Beverage) {
+                Boolean selectionIsCustomizable = (sel instanceof Customizable);
+                if (sel != null && selectionIsCustomizable) {
                     Stage currentStage = (Stage)((Node) e.getSource()).getScene().getWindow();
                     goToCustomizationScene(currentStage, sel);
                 }

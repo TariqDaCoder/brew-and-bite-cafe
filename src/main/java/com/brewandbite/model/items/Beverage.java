@@ -41,17 +41,6 @@ public class Beverage extends MenuItem implements Customizable{
     }
 
     /**
-     * Customization add on
-     */
-    public void addCustomization(Customization customAddOn) {
-        customAddOn.applyCustomization(this);
-    }
-
-    public void removeCustomization(Customization customAddOn) {
-        customAddOn.removeCustomization(this);
-    }
-
-    /**
      * Read‑only view of customizations
      */
     public List<Customization> getCustomizations() {

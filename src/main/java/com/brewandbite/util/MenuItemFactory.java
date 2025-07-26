@@ -5,6 +5,8 @@ import com.brewandbite.model.items.Cookie;
 import com.brewandbite.model.items.Muffin;
 import com.brewandbite.model.items.Croissant;
 import com.brewandbite.model.items.MenuItem;
+import com.brewandbite.model.items.Coffee.CoffeeType;
+
 
 public class MenuItemFactory {
     public MenuItemFactory() {
@@ -15,7 +17,7 @@ public class MenuItemFactory {
         MenuItem menuItemToReturn = null;
 
         if (menuItem instanceof Coffee) {
-            menuItemToReturn = new Coffee();
+            menuItemToReturn = new Coffee(1, CoffeeType.BLACK);
         } else if (menuItem instanceof Cookie) {
             menuItemToReturn = new Cookie(1, ((Cookie)menuItem).getType());
         } else if (menuItem instanceof Croissant) {
