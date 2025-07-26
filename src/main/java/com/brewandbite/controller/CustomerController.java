@@ -4,6 +4,10 @@ import java.util.List;
 import com.brewandbite.model.items.Cookie;
 import com.brewandbite.model.items.Coffee;
 import com.brewandbite.model.items.MenuItem;
+import com.brewandbite.model.items.Muffin;
+import com.brewandbite.model.items.Muffin.MuffinType;
+import com.brewandbite.model.items.Tea;
+import com.brewandbite.model.items.Tea.TeaType;
 import com.brewandbite.model.items.Coffee.CoffeeType;
 import com.brewandbite.model.items.Cookie.CookieType;
 import com.brewandbite.model.items.Beverage;
@@ -39,6 +43,14 @@ public class CustomerController {
         this.menuItems.add(new Cookie(1, CookieType.OATMEAL_RAISIN));
         this.menuItems.add(new Cookie(1, CookieType.CHOCOLATE_CHIP));
         this.menuItems.add(new Coffee(1, CoffeeType.BLACK));
+        this.menuItems.add(new Coffee(1, CoffeeType.LATTE));
+        this.menuItems.add(new Coffee(1, CoffeeType.ESPRESSO));
+        this.menuItems.add(new Coffee(1, CoffeeType.CAPPUCCINO));
+        this.menuItems.add(new Tea(1, TeaType.BLACK));
+        this.menuItems.add(new Tea(1, TeaType.GREEN));
+        this.menuItems.add(new Tea(1, TeaType.HERBAL));
+        this.menuItems.add(new Muffin(1, MuffinType.BLUEBERRY));
+        this.menuItems.add(new Muffin(1, MuffinType.CHOCOLATE_CHIP));
 
         menuItemFactory = new MenuItemFactory();
         this.orderQueue = queue;
@@ -89,7 +101,6 @@ public class CustomerController {
         // 2) Place Order → add selected item to cart
         view.addToOrder.setOnAction(e -> {
             try {
-                //MenuItem sel = new Cookie(1, null);
                 MenuItem sel = getSelectedItem(view.menuList, menuItems);
                 if (sel != null) {
                     addSelectionToCart(sel);

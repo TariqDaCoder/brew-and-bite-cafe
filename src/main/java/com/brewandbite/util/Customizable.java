@@ -2,7 +2,7 @@ package com.brewandbite.util;
 
 import com.brewandbite.model.items.Beverage;
 
-//group and abstract customization
+//Group and abstract customization.
 //Drink size and add ons can both be
 //considered a customization
 public interface Customizable {
@@ -42,10 +42,10 @@ public interface Customizable {
 
         public void applyCustomization(Beverage beverage) {
             switch(this.getType()) {
-                case Beverage.CustomizationType.SIZE:
+                case CustomizationType.SIZE:
                     beverage.setDrinkSize(this);
                 break;
-                case Beverage.CustomizationType.CUSTOMIZATION:
+                case CustomizationType.CUSTOMIZATION:
                     beverage.customizationsOnBeverage.add(this); // Added to lists of customizations
                 break;
                 default:
@@ -55,7 +55,7 @@ public interface Customizable {
         
         public void removeCustomization(Beverage beverage) {
             switch(this.getType()) {
-                case Beverage.CustomizationType.CUSTOMIZATION:
+                case CustomizationType.CUSTOMIZATION:
                     beverage.customizationsOnBeverage.remove(this); // Added to lists of customizations
                 break;
                 default:

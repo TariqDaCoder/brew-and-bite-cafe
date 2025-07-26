@@ -12,13 +12,13 @@ public class Tea extends Beverage {
             String teaType = " ";
             switch(this) {
                 case BLACK:
-                    teaType = "Black";
+                    teaType = "Black Tea";
                 break;
                 case GREEN:
-                    teaType = "Green";
+                    teaType = "Green Tea";
                 break;
                 case HERBAL:
-                    teaType = "Herbal";
+                    teaType = "Herbal Tea";
                 break;
                 default:
                 break;

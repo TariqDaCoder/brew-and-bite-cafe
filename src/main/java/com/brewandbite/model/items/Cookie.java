@@ -16,10 +16,10 @@ public class Cookie extends Pastry {
             String cookieTypeString = " ";
             switch(this) {
                 case CHOCOLATE_CHIP:
-                    cookieTypeString = "Chocolate-Chip";
+                    cookieTypeString = "Chocolate-Chip Cookie";
                 break;
                 case OATMEAL_RAISIN:
-                    cookieTypeString = "Oatmeal-Raisin";
+                    cookieTypeString = "Oatmeal-Raisin Cookie";
                 break;
                 default:
                 break;

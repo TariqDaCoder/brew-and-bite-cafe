@@ -9,17 +9,17 @@ public class Muffin extends Pastry {
      * The available muffin types.
      */
     public enum MuffinType {
-        BLUEBERRY(2.00, "Chocolate-Chip Muffin"), CHOCOLATE_CHIP(2.25, "Chocolate-Chip Muffin");
+        BLUEBERRY(2.00, "Blueberry Muffin"), CHOCOLATE_CHIP(2.25, "Chocolate-Chip Muffin");
 
         @Override
         public String toString() {
             String cookieTypeString = " ";
             switch(this) {
                 case BLUEBERRY:
-                    cookieTypeString = "Blueberry";
+                    cookieTypeString = "Blueberry Muffin";
                 break;
                 case CHOCOLATE_CHIP:
-                    cookieTypeString = "Chocolate-Chip";
+                    cookieTypeString = "Chocolate-Chip Muffin";
                 break;
                 default:
                 break;
