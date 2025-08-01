@@ -19,8 +19,8 @@ public class CustomerController {
     private int nextOrderId = 1;
 
     public CustomerController(CustomerView view,
-            List<MenuItem> menu,
-            InMemoryQueue<Order> queue) {
+                              List<MenuItem> menu,
+                              InMemoryQueue<Order> queue) {
         this.view = view;
         this.menuItems = FXCollections.observableArrayList(menu);
         this.orderQueue = queue;
@@ -37,8 +37,13 @@ public class CustomerController {
                 MenuItem sel = view.menuList.getSelectionModel().getSelectedItem();
                 if (sel != null) {
                     cartItems.add(sel);
+                    System.out.println("✅ Added to cart: " + sel.getName() + " - $" + sel.calculatePrice());
+                    System.out.println("📦 Cart now has " + cartItems.size() + " items");
+                } else {
+                    System.out.println("❌ No item selected to add to cart");
                 }
             } catch (Exception ex) {
+                System.out.println("🚫 Error adding item to cart: " + ex.getMessage());
                 ex.printStackTrace();
             }
         });
@@ -46,8 +51,11 @@ public class CustomerController {
         // 3) Clear Order → empty the cart
         view.clearOrder.setOnAction(e -> {
             try {
+                int itemCount = cartItems.size();
                 cartItems.clear();
+                System.out.println("🧹 Cleared cart (" + itemCount + " items removed)");
             } catch (Exception ex) {
+                System.out.println("🚫 Error clearing cart: " + ex.getMessage());
                 ex.printStackTrace();
             }
         });
@@ -57,6 +65,7 @@ public class CustomerController {
             try {
                 submitOrder();
             } catch (Exception ex) {
+                System.out.println("🚫 Error in submit order button: " + ex.getMessage());
                 ex.printStackTrace();
             }
         });
@@ -64,22 +73,45 @@ public class CustomerController {
 
     private void submitOrder() {
         try {
-            if (cartItems.isEmpty() || view.nameField.getText().isBlank()) {
-                // Optionally show an error label here
+            // Validation checks with feedback
+            if (cartItems.isEmpty()) {
+                System.out.println("❌ Cannot submit: Cart is empty");
                 return;
             }
 
-            // Build and enqueue the order
-            Order order = new Order(nextOrderId++, view.nameField.getText().trim());
+            if (view.nameField.getText().isBlank()) {
+                System.out.println("❌ Cannot submit: Customer name is required");
+                return;
+            }
+
+            // Build the order
+            String customerName = view.nameField.getText().trim();
+            Order order = new Order(nextOrderId++, customerName);
+
+            // Add items and calculate total
             cartItems.forEach(order::addItem);
+
+            // Enqueue the order
             orderQueue.enqueue(order);
+
+            // Success feedback
+            System.out.println("🎉 SUCCESS: Order submitted!");
+            System.out.println("👤 Customer: " + order.getCustomerName());
+            System.out.println("🛒 Items: " + order.getItems().size());
+            System.out.println("💰 Total: $" + String.format("%.2f", order.getTotalPrice()));
+            System.out.println("📝 Order ID: " + order.getOrderId());
+            System.out.println("🔄 Queue now has " + orderQueue.size() + " orders");
+            System.out.println("📋 Order details: " + order);
+            System.out.println("─────────────────────────────────────────");
 
             // Reset UI
             cartItems.clear();
             view.nameField.clear();
 
+            System.out.println("✨ UI cleared - ready for next order");
+
         } catch (Exception ex) {
-            // Catch any unexpected errors during order submission
+            System.out.println("🚫 CRITICAL ERROR submitting order: " + ex.getMessage());
             ex.printStackTrace();
         }
     }

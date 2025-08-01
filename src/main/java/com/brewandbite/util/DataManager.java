@@ -7,15 +7,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
-import static java.util.Collections.emptyList;
 import java.util.List;
+import java.util.Map;
 
-import com.brewandbite.model.BeverageDTO;
-import com.brewandbite.model.InventoryData;
-import com.brewandbite.model.MenuDataDTO;
-import com.brewandbite.model.PastryDTO;
 import com.brewandbite.model.inventory.Ingredient;
 import com.brewandbite.model.items.Beverage;
+import com.brewandbite.model.items.Cookie;
 import com.brewandbite.model.items.Croissant;
 import com.brewandbite.model.items.MenuItem;
 import com.brewandbite.model.items.Muffin;
@@ -23,10 +20,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 /**
- * A unified JSON data manager that combines the convenience of a static facade
- * (with a fixed data directory) and the type-safety of generic loading via Gson
- * and TypeToken. It can load wrapper objects or flatten menu/inventory into
- * flat lists.
+ * A unified JSON data manager that loads menu and inventory data from JSON files
+ * and creates proper MenuItem and Ingredient objects.
  */
 public class DataManager {
 
@@ -41,6 +36,10 @@ public class DataManager {
         try (Reader r = new InputStreamReader(
                 DataManager.class.getClassLoader()
                         .getResourceAsStream("data/" + filename))) {
+            if (r == null) {
+                System.err.println("Could not find resource: data/" + filename);
+                return null;
+            }
             return gson.fromJson(r, typeOfT);
         } catch (Exception e) {
             System.err.println("Error loading " + filename + ": " + e.getMessage());
@@ -66,64 +65,99 @@ public class DataManager {
      * single List<MenuItem>. Returns empty list on null.
      */
     public static List<MenuItem> loadAllMenuItems() {
-        // 1) Read the raw DTO wrapper
-        Type dtoType = new TypeToken<MenuDataDTO>() {
-        }.getType();
-        MenuDataDTO dto = loadFromJson("menu.json", dtoType);
-        if (dto == null) {
+        // Read the menu wrapper object with beverages and pastries arrays
+        Type menuType = new TypeToken<Map<String, Object>>() {}.getType();
+        Map<String, Object> menuData = loadFromJson("menu.json", menuType);
+
+        if (menuData == null) {
             return Collections.emptyList();
         }
 
-        List<MenuItem> flat = new ArrayList<>();
+        List<MenuItem> allItems = new ArrayList<>();
         int nextId = 1;
 
-        // 2) Convert each BeverageDTO → your concrete Beverage subclass
-        for (BeverageDTO b : dto.beverages) {
-            // pick a default size, or you could loop sizes too
-            Beverage bev = new Beverage(
-                    nextId++,
-                    b.name,
-                    b.basePrice,
-                    b.description,
-                    Beverage.DrinkSize.MEDIUM // or parse b.sizes.get(1) into the enum
-            );
-            flat.add(bev);
-        }
+        // Process beverages
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> beverages = (List<Map<String, Object>>) menuData.get("beverages");
+        if (beverages != null) {
+            for (Map<String, Object> bev : beverages) {
+                String name = (String) bev.get("name");
+                double basePrice = ((Number) bev.get("basePrice")).doubleValue();
+                String description = (String) bev.get("description");
 
-        // 3) Convert each PastryDTO → a specific subclass
-        for (PastryDTO p : dto.pastries) {
-            MenuItem pastry;
-            if (p.name.toLowerCase().contains("croissant")) {
-                // assume butter unless name contains "chocolate"
-                var type = p.name.toLowerCase().contains("chocolate")
-                        ? Croissant.CroissantType.CHOCOLATE
-                        : Croissant.CroissantType.BUTTER;
-                pastry = new Croissant(nextId++, type);
-            } else if (p.name.toLowerCase().contains("muffin")) {
-                var type = p.name.toLowerCase().contains("blueberry")
-                        ? Muffin.MuffinType.BLUEBERRY
-                        : Muffin.MuffinType.CHOCOLATE_CHIP;
-                pastry = new Muffin(nextId++, type);
-            } else {
-                // TODO: Add a fallback
-                return null;
+                // Create beverage with default medium size
+                Beverage beverage = new Beverage(
+                        nextId++,
+                        name,
+                        basePrice,
+                        description,
+                        Beverage.DrinkSize.MEDIUM
+                );
+                allItems.add(beverage);
             }
-            flat.add(pastry);
         }
 
-        return flat;
+        // Process pastries
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> pastries = (List<Map<String, Object>>) menuData.get("pastries");
+        if (pastries != null) {
+            for (Map<String, Object> pastry : pastries) {
+                String name = (String) pastry.get("name");
+                double basePrice = ((Number) pastry.get("basePrice")).doubleValue();
+
+                MenuItem pastryItem = createPastryItem(nextId++, name, basePrice);
+                if (pastryItem != null) {
+                    allItems.add(pastryItem);
+                }
+            }
+        }
+
+        return allItems;
     }
 
     /**
-     * Reads the inventory wrapper (with ingredients) and returns its list.
+     * Creates the appropriate pastry subclass based on the name.
+     */
+    private static MenuItem createPastryItem(int id, String name, double basePrice) {
+        String lowerName = name.toLowerCase();
+
+        if (lowerName.contains("croissant")) {
+            Croissant.CroissantType type = lowerName.contains("chocolate")
+                    ? Croissant.CroissantType.CHOCOLATE
+                    : Croissant.CroissantType.BUTTER;
+            return new Croissant(id, type);
+        }
+        else if (lowerName.contains("muffin")) {
+            Muffin.MuffinType type = lowerName.contains("blueberry")
+                    ? Muffin.MuffinType.BLUEBERRY
+                    : Muffin.MuffinType.CHOCOLATE_CHIP;
+            return new Muffin(id, type);
+        }
+        else if (lowerName.contains("cookie")) {
+            Cookie.CookieType type = lowerName.contains("oatmeal")
+                    ? Cookie.CookieType.OATMEAL_RAISIN
+                    : Cookie.CookieType.CHOCOLATE_CHIP;
+            return new Cookie(id, type);
+        }
+
+        // If we can't determine the type, skip it
+        System.err.println("Unknown pastry type: " + name);
+        return null;
+    }
+
+    /**
+     * Reads the inventory wrapper (with ingredients array) and returns the ingredient list.
      * Returns empty list on null.
      */
     public static List<Ingredient> loadAllIngredients() {
-        Type invType = new TypeToken<InventoryData>() {
-        }.getType();
-        InventoryData id = loadFromJson("inventory.json", invType);
-        return (id == null || id.ingredients == null)
-                ? emptyList()
-                : id.ingredients;
+        // Read the inventory wrapper object with ingredients array
+        Type inventoryType = new TypeToken<Map<String, List<Ingredient>>>() {}.getType();
+        Map<String, List<Ingredient>> inventoryData = loadFromJson("inventory.json", inventoryType);
+
+        if (inventoryData == null || inventoryData.get("ingredients") == null) {
+            return Collections.emptyList();
+        }
+
+        return inventoryData.get("ingredients");
     }
 }

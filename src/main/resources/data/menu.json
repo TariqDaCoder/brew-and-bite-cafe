@@ -1,1 +1,28 @@
-[{"drinkSize":"MEDIUM","customizationsOnBeverage":[],"id":1,"basePrice":4.5,"itemName":"Latte","description":"Espresso with milk"}]
+{
+  "beverages": [
+    {
+      "name": "Latte",
+      "basePrice": 4.5,
+      "description": "Espresso with steamed milk",
+      "sizes": ["Small", "Medium", "Large"]
+    },
+    {
+      "name": "Cappuccino",
+      "basePrice": 4.0,
+      "description": "Espresso with foamed milk",
+      "sizes": ["Small", "Medium", "Large"]
+    }
+  ],
+  "pastries": [
+    {
+      "name": "Chocolate Croissant",
+      "basePrice": 2.25,
+      "description": "Buttery croissant with chocolate"
+    },
+    {
+      "name": "Blueberry Muffin",
+      "basePrice": 2.0,
+      "description": "Fresh blueberry muffin"
+    }
+  ]
+}

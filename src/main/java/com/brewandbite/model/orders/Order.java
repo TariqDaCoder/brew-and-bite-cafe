@@ -76,7 +76,7 @@ public class Order {
     public void calculateTotal() {
         this.totalPrice = 0.0;
         for (MenuItem item : items) {
-            this.totalPrice += item.getBasePrice();
+            this.totalPrice += item.calculatePrice();
         }
     }
 

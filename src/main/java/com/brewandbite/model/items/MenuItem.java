@@ -5,7 +5,7 @@ public abstract class MenuItem {
     //total price for the MenuItem
     private int id;
     private double basePrice;
-    private String itemName;
+    private String name;
     private String description;
 
     /**
@@ -16,7 +16,7 @@ public abstract class MenuItem {
      */
     public MenuItem(int id, String name, double basePrice, String description) {
         this.id = id;
-        this.itemName = name;
+        this.name = name;
         this.basePrice = basePrice;
         this.description = description;
     }
@@ -35,8 +35,8 @@ public abstract class MenuItem {
         return basePrice;
     }
 
-    public String getItemName() {
-        return itemName;
+    public String getName() {
+        return name;
     }
 
     public String getDescription() {
@@ -48,8 +48,8 @@ public abstract class MenuItem {
         this.basePrice = basePrice;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setDescription(String description) {
@@ -77,7 +77,7 @@ public abstract class MenuItem {
         return "MenuItem{"
                 + "basePrice=" + basePrice
                 + ", id=" + id
-                + ", name='" + itemName + '\''
+                + ", name='" + name + '\''
                 + ", description='" + description + '\''
                 + '}';
     }
