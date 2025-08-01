@@ -6,11 +6,11 @@ plugins {
 group = 'com.brewandbite'
 version = '1.0-SNAPSHOT'
 
-// java {
-//     toolchain {
+//java {
+//    toolchain {
 //         languageVersion = JavaLanguageVersion.of(21)
 //     }
-// }
+//}
 
 repositories {
     mavenCentral()

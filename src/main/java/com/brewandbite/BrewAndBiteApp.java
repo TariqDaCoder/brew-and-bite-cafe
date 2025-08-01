@@ -19,6 +19,12 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
 import javafx.stage.Stage;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.TextField;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.Label;
 
 public class BrewAndBiteApp extends Application {
 
@@ -45,31 +51,81 @@ public class BrewAndBiteApp extends Application {
 
         String role = opt.get();
         primaryStage.setTitle("Brew & Bite Cafe  " + role);
-        Scene scene;
 
         switch (role) {
-            case "Barista" -> {
-                BaristaView bv = new BaristaView();
-                BaristaController bc = new BaristaController(bv, orderQueue);
-                bc.initialize();
-                scene = new Scene(bv, 800, 600);
-            }
-            case "Manager" -> {
-                ManagerView mv = new ManagerView();
-                ManagerController mc = new ManagerController(mv);
-                mc.initialize();
-                scene = new Scene(mv, 800, 600);
-            }
+            case "Barista" -> openLogin(primaryStage, role, menu, inventory, orderQueue);
+            case "Manager" -> openLogin(primaryStage, role, menu, inventory, orderQueue);
             default -> {
                 CustomerView cv = new CustomerView();
                 CustomerController cc = new CustomerController(cv, menu, orderQueue);
                 cc.initialize();
-                scene = new Scene(cv, 800, 600);
+                Scene scene = new Scene(cv, 800, 600);
+                primaryStage.setScene(scene);
+                primaryStage.show();
             }
         }
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    }
+    
+    // barista and manager authentication
+    // hardcoded usernames and passwords
+    private static final String baristaUsername = "barista135";
+    private static final String baristaPassword = "barista531";
+    private static final String managerUsername = "manager246";
+    private static final String managerPassword = "manager642";
+    
+    // login window for the barista and manager
+    private void openLogin(Stage primaryStage, String role, List<MenuItem> menu,
+    		List<Ingredient> inventory, InMemoryQueue<Order> orderQueue) {
+    	// stage setup
+    	Stage lStage = new Stage();
+    	Button login = new Button("Login");
+    	Label usernameLabel = new Label("Username: ");
+    	Label passwordLabel = new Label("Password: ");
+    	Label loginError = new Label();
+    	
+    	// allowing for user input for username and password
+    	TextField usernameField = new TextField();
+    	PasswordField passwordField = new PasswordField();
+    	
+    	login.setOnAction (e -> {
+    		String usernameInput = usernameField.getText();
+    		String passwordInput = passwordField.getText();
+    		
+    		if (role.equals("Barista") && usernameInput.equals(baristaUsername)
+    				&& passwordInput.equals(baristaPassword)) {
+    			// barista access is only granted if conditions above are met
+                BaristaView bv = new BaristaView();
+                BaristaController bc = new BaristaController(bv, orderQueue);
+                bc.initialize();
+                Scene scene = new Scene(bv, 800, 600);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+                lStage.close();
+    		} else if (role.equals("Manager") && usernameInput.equals(managerUsername)
+    				&& passwordInput.equals(managerPassword)) {
+    			// manager access is only granted if conditions above are met
+                ManagerView mv = new ManagerView();
+                ManagerController mc = new ManagerController(mv);
+                mc.initialize();
+                Scene scene = new Scene(mv, 800, 600);
+                primaryStage.setScene(scene);
+                primaryStage.show();
+                lStage.close();
+    		} else {
+    			// clearing password field and displayin error message if login is invalid
+    			passwordField.clear();
+    			loginError.setText("Username and/or password is incorrect.\nPlease try again.");
+    		}
+    	});
+    	
+    	// formatting for lStage
+		VBox vBox = new VBox(20);
+		vBox.setPadding(new Insets(20));
+		vBox.getChildren().addAll(usernameLabel, usernameField, passwordLabel, passwordField, login, loginError);
+		Scene scene = new Scene(vBox, 300, 350);
+		lStage.setTitle("Login Window");
+		lStage.setScene(scene);
+		lStage.show();
     }
 
     public static void main(String[] args) {
