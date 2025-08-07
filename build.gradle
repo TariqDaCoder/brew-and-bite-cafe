@@ -29,6 +29,7 @@ dependencies {
 javafx {
     version = '21'
     modules = ['javafx.controls', 'javafx.fxml','javafx.graphics']
+    modules = ['javafx.controls', 'javafx.fxml','javafx.graphics']
 }
 
 application {
@@ -58,6 +59,10 @@ task runApp(type: JavaExec) {
     description = 'Run the Brew & Bite Cafe application'
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'com.brewandbite.BrewAndBiteApp'
+    jvmArgs = [
+        '--module-path', classpath.asPath,
+        '--add-modules', 'javafx.controls,javafx.fxml'
+    ]
     jvmArgs = [
         '--module-path', classpath.asPath,
         '--add-modules', 'javafx.controls,javafx.fxml'

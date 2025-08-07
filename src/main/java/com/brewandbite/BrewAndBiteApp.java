@@ -15,6 +15,21 @@ import com.brewandbite.views.BaristaView;
 import com.brewandbite.views.CustomerView;
 import com.brewandbite.views.ManagerView;
 
+import java.util.List;
+import java.util.Optional;
+
+import com.brewandbite.controller.BaristaController;
+import com.brewandbite.controller.CustomerController;
+import com.brewandbite.controller.ManagerController;
+import com.brewandbite.model.inventory.Ingredient;
+import com.brewandbite.model.items.MenuItem;
+import com.brewandbite.model.orders.Order;
+import com.brewandbite.util.DataManager;
+import com.brewandbite.util.InMemoryQueue;
+import com.brewandbite.views.BaristaView;
+import com.brewandbite.views.CustomerView;
+import com.brewandbite.views.ManagerView;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
@@ -27,6 +42,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.Label;
 
 public class BrewAndBiteApp extends Application {
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -128,7 +144,9 @@ public class BrewAndBiteApp extends Application {
 		lStage.show();
     }
 
+
     public static void main(String[] args) {
         launch(args);
     }
 }
+
