@@ -36,7 +36,12 @@ public class BrewAndBiteApp extends Application {
 
         // 2) Shared queue for orders
         InMemoryQueue<Order> orderQueue = new InMemoryQueue<>();
+        
+        switchRole(primaryStage, menu, inventory, orderQueue);
+    }
 
+    // allowing for role switching once already in a role
+    private void switchRole(Stage primaryStage, List<MenuItem> menu, List<Ingredient> inventory, InMemoryQueue<Order> orderQueue) {
         // 3) Let the user pick a role
         ChoiceDialog<String> choiceDialog = new ChoiceDialog<>(
                 "Customer", List.of("Customer", "Barista", "Manager")
@@ -57,6 +62,7 @@ public class BrewAndBiteApp extends Application {
             case "Manager" -> openLogin(primaryStage, role, menu, inventory, orderQueue);
             default -> {
                 CustomerView cv = new CustomerView();
+                cv.switchRoleButton.setOnAction(c -> switchRole(primaryStage, menu, inventory, orderQueue));
                 CustomerController cc = new CustomerController(cv, menu, orderQueue);
                 cc.initialize();
                 Scene scene = new Scene(cv, 800, 600);
@@ -95,6 +101,7 @@ public class BrewAndBiteApp extends Application {
     				&& passwordInput.equals(baristaPassword)) {
     			// barista access is only granted if conditions above are met
                 BaristaView bv = new BaristaView();
+                bv.switchRoleButton.setOnAction(b -> switchRole(primaryStage, menu, inventory, orderQueue));
                 BaristaController bc = new BaristaController(bv, orderQueue);
                 bc.initialize();
                 Scene scene = new Scene(bv, 800, 600);
@@ -105,6 +112,7 @@ public class BrewAndBiteApp extends Application {
     				&& passwordInput.equals(managerPassword)) {
     			// manager access is only granted if conditions above are met
                 ManagerView mv = new ManagerView();
+                mv.switchRoleButton.setOnAction(m -> switchRole(primaryStage, menu, inventory, orderQueue));
                 ManagerController mc = new ManagerController(mv);
                 mc.initialize();
                 Scene scene = new Scene(mv, 800, 600);
@@ -112,7 +120,7 @@ public class BrewAndBiteApp extends Application {
                 primaryStage.show();
                 lStage.close();
     		} else {
-    			// clearing password field and displayin error message if login is invalid
+    			// clearing password field and displaying error message if login is invalid
     			passwordField.clear();
     			loginError.setText("Username and/or password is incorrect.\nPlease try again.");
     		}

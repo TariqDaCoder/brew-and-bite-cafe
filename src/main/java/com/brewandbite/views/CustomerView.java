@@ -18,6 +18,7 @@ public class CustomerView extends VBox {
     public final Button placeOrder = new Button("Add to Cart");
     public final Button submitOrder = new Button("Submit Order");
     public final Button clearOrder = new Button("Clear Cart");
+    public final Button switchRoleButton = new Button("Switch Roles");
     public final HBox orderButtons = new HBox(10, placeOrder, submitOrder, clearOrder);
     public final TextField nameField = new TextField();
     private static final String CUSTOMER_NAME_LABEL = "Customer Name:";
@@ -69,7 +70,8 @@ public class CustomerView extends VBox {
                 customerNameHeader, nameField,
                 menuHeader, menuList,
                 orderButtons,
-                cartHeader, cartList
+                cartHeader, cartList,
+                switchRoleButton
         );
     }
 }

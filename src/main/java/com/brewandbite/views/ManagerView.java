@@ -17,6 +17,7 @@ public class ManagerView extends VBox {
     public final ListView<MenuItem> menuEditor = new ListView<>();
     public final Button addItem = new Button("Add Item");
     public final Button removeItem = new Button("Remove Item");
+    public final Button switchRoleButton = new Button("Switch Roles");
     public final HBox menuButtons = new HBox(10, addItem, removeItem);
     public final ListView<Ingredient> inventoryList = new ListView<>();
     public final Button restockBtn = new Button("Restock (+5)");
@@ -72,7 +73,8 @@ public class ManagerView extends VBox {
                 separator,
                 inventoryHeader,
                 inventoryList,
-                restockBtn
+                restockBtn,
+                switchRoleButton
         );
     }
 }
