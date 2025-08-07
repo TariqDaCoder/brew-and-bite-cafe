@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import com.brewandbite.util.Customizable;
 
-public class Beverage extends MenuItem implements Customizable{
+public abstract class Beverage extends MenuItem implements Customizable{
     private Customization drinkSize;
     public List<Customization> customizationsOnBeverage = new ArrayList<>(); // This will be the lists of addons for customer's drinks
 
@@ -19,10 +19,10 @@ public class Beverage extends MenuItem implements Customizable{
 
     //for customer view, so they can see the item name and the current
     //customizations on it
-    public String nameWithCustomizationsToString() {
+    public String customizationsToString() {
         String retString = "";
 
-        retString = this.getItemName() + "\n" + this.getDrinkSize() + "\n";
+        retString = this.getDrinkSize() + "\n";
         for (Customization customizationType : customizationsOnBeverage) {
             retString = retString + customizationType.toString() + "\n";
         }

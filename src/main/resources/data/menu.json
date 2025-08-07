@@ -1,5 +1,5 @@
 {
-  "beverages": [
+  "coffees": [
     {
       "name": "Latte",
       "basePrice": 4.5,
@@ -10,6 +10,38 @@
       "name": "Cappuccino",
       "basePrice": 4.0,
       "description": "Espresso with foamed milk",
+      "sizes": ["Small", "Medium", "Large"]
+    },
+    {
+      "name": "Black Coffee",
+      "basePrice": 2.50,
+      "description": "A black coffee",
+      "sizes": ["Small", "Medium", "Large"]
+    },
+    {
+      "name": "Espresso",
+      "basePrice": 2.50,
+      "description": "A shot of espresso",
+      "sizes": ["Small", "Medium", "Large"]
+    }
+  ],
+  "teas": [
+    {
+      "name": "Green Tea",
+      "basePrice": 2.50,
+      "description": "A green tea",
+      "sizes": ["Small", "Medium", "Large"]
+    },
+    {
+      "name": "Black Tea",
+      "basePrice": 2.50,
+      "description": "A black tea",
+      "sizes": ["Small", "Medium", "Large"]
+    },
+    {
+      "name": "Herbal Tea",
+      "basePrice": 2.50,
+      "description": "A black tea",
       "sizes": ["Small", "Medium", "Large"]
     }
   ],

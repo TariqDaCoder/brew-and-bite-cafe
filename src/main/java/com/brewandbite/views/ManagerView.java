@@ -41,7 +41,7 @@ public class ManagerView extends VBox {
                 } else {
                     // Format: "Name - $Price (ID: 1)"
                     setText(String.format("%s - $%.2f (ID: %d)",
-                            item.getName(),
+                            item.getItemName(),
                             item.getBasePrice(),
                             item.getId()));
                 }

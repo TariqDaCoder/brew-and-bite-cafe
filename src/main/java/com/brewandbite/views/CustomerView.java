@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 public class CustomerView extends VBox {
     public final ListView<MenuItem> menuList = new ListView<>();
     public final ListView<MenuItem> cartList = new ListView<>();
+    public final Button placeOrder = new Button("Add to Cart");
     public final Button addToOrder = new Button("Add To Order"); // Move items into cartlist, not actually submit it
     public final Button removeFromOrder = new Button("Remove From Order");
     public final Button customizeItem = new Button("Customize Item");
@@ -44,7 +45,12 @@ public class CustomerView extends VBox {
                     if (empty || menuItem == null || menuItem.getItemName() == null) {
                         setText(null);
                     } else {
-                        setText(menuItem.getItemName());
+                        //setText(menuItem.getItemName());
+                                            // Format: "Name - $Price (Description)"
+                    setText(String.format("%s - $%.2f (%s)",
+                            menuItem.getItemName(),
+                            menuItem.getBasePrice(),
+                            menuItem.getDescription()));
                     }
             }
         });
@@ -58,9 +64,21 @@ public class CustomerView extends VBox {
                     } else {
                         //display customizations when applicable
                         if (menuItem instanceof Beverage) {
-                            setText(((Beverage)menuItem).nameWithCustomizationsToString());
+                            //setText(((Beverage)menuItem).nameWithCustomizationsToString());
+                            // Format: "Name: 
+                            //         Customizations
+                            //         $Price"
+                            setText(String.format("%s:\n%s$%.2f",
+                                    menuItem.getItemName(),
+                                    ((Beverage)menuItem).customizationsToString(),
+                                    menuItem.calculatePrice())
+                                    );
                         } else {
-                            setText(menuItem.getItemName());
+                            //setText(menuItem.getItemName());
+                            // Format: "Name - $Price"
+                            setText(String.format("%s - $%.2f",
+                                    menuItem.getItemName(),
+                                    menuItem.calculatePrice()));
                         }
                     }
             }

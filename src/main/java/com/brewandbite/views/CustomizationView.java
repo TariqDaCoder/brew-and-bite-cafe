@@ -49,7 +49,7 @@ public class CustomizationView extends VBox {
                     if (empty || menuItem == null || menuItem.toString() == null) {
                         setText(null);
                     } else {
-                        setText(selectedBeverage.nameWithCustomizationsToString());
+                        setText(selectedBeverage.getItemName() + "\n" + selectedBeverage.customizationsToString());
                     }
             }
         });

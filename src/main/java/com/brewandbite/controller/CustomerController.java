@@ -39,25 +39,24 @@ public class CustomerController {
         this.view = view;
         this.menuItems = FXCollections.observableArrayList(menu);
 
-        
-        this.menuItems.add(new Cookie(1, CookieType.OATMEAL_RAISIN));
-        this.menuItems.add(new Cookie(1, CookieType.CHOCOLATE_CHIP));
-        this.menuItems.add(new Coffee(1, CoffeeType.BLACK));
-        this.menuItems.add(new Coffee(1, CoffeeType.LATTE));
-        this.menuItems.add(new Coffee(1, CoffeeType.ESPRESSO));
-        this.menuItems.add(new Coffee(1, CoffeeType.CAPPUCCINO));
-        this.menuItems.add(new Tea(1, TeaType.BLACK));
-        this.menuItems.add(new Tea(1, TeaType.GREEN));
-        this.menuItems.add(new Tea(1, TeaType.HERBAL));
-        this.menuItems.add(new Muffin(1, MuffinType.BLUEBERRY));
-        this.menuItems.add(new Muffin(1, MuffinType.CHOCOLATE_CHIP));
+        // this.menuItems.add(new Cookie(1, CookieType.OATMEAL_RAISIN));
+        // this.menuItems.add(new Cookie(1, CookieType.CHOCOLATE_CHIP));
+        // this.menuItems.add(new Coffee(1, CoffeeType.BLACK));
+        // this.menuItems.add(new Coffee(1, CoffeeType.LATTE));
+        // this.menuItems.add(new Coffee(1, CoffeeType.ESPRESSO));
+        // this.menuItems.add(new Coffee(1, CoffeeType.CAPPUCCINO));
+        // this.menuItems.add(new Tea(1, TeaType.BLACK));
+        // this.menuItems.add(new Tea(1, TeaType.GREEN));
+        // this.menuItems.add(new Tea(1, TeaType.HERBAL));
+        // this.menuItems.add(new Muffin(1, MuffinType.BLUEBERRY));
+        // this.menuItems.add(new Muffin(1, MuffinType.CHOCOLATE_CHIP));
 
         menuItemFactory = new MenuItemFactory();
 
         this.orderQueue = queue;
     }
 
-        public void addSelectionToCart(MenuItem sel) {
+    public void addSelectionToCart(MenuItem sel) {
         //create new instance of selection via factory
         //and add to cart
         MenuItem menuItemToAdd = menuItemFactory.initializeAndGetMenuItem(sel);
@@ -66,6 +65,31 @@ public class CustomerController {
 
     public void removeFromOrder(MenuItem sel) {
         cartItems.remove(sel);
+    }
+
+    public void clearCart() {
+        cartItems.clear();
+        //cartItemsToDisplay.clear();
+    }
+
+    //gets the selected MenuItem from the selected string that the Customer sees
+    public <T> MenuItem getSelectedItem(ListView<T> list, ObservableList<MenuItem> relaventList) {
+        int selectionIndex = list.getSelectionModel().getSelectedIndex();
+        return relaventList.get(selectionIndex);
+    }
+
+    public void goToCustomizationScene(Stage currentStage, MenuItem selectedItem) {
+        System.err.println("test");        
+        CustomizationView customizationView = new CustomizationView();
+        Scene scene = new Scene(customizationView, 800, 600);
+
+        //add the menu item they want to customize
+        customizationView.selectedBeverage = (Beverage)selectedItem;
+        customizationView.selectedItem.getItems().add(customizationView.selectedBeverage);
+        customizationView.customerView = view.customizeItem.getScene();
+
+        currentStage.setScene(scene);
+        currentStage.show();
     }
 
     public void initialize() {
@@ -116,8 +140,9 @@ public class CustomerController {
             try {
                 MenuItem sel = view.menuList.getSelectionModel().getSelectedItem();
                 if (sel != null) {
-                    cartItems.add(sel);
-                    System.out.println("✅ Added to cart: " + sel.getName() + " - $" + sel.calculatePrice());
+                    //cartItems.add(sel);
+                    addSelectionToCart(sel);
+                    System.out.println("✅ Added to cart: " + sel.getItemName() + " - $" + sel.calculatePrice());
                     System.out.println("📦 Cart now has " + cartItems.size() + " items");
                 } else {
                     System.out.println("❌ No item selected to add to cart");
@@ -132,7 +157,8 @@ public class CustomerController {
         view.clearOrder.setOnAction(e -> {
             try {
                 int itemCount = cartItems.size();
-                cartItems.clear();
+                //cartItems.clear();
+                clearCart();
                 System.out.println("🧹 Cleared cart (" + itemCount + " items removed)");
             } catch (Exception ex) {
                 System.out.println("🚫 Error clearing cart: " + ex.getMessage());
