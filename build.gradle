@@ -59,7 +59,7 @@ task runApp(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'com.brewandbite.BrewAndBiteApp'
     
-    // ASHLEY CHANGE
+    /*
     def javafxPath = configurations.runtimeClasspath
                      .filter { it.name.contains("javafx") }
                      .collect { it.absolutePath }
@@ -68,5 +68,5 @@ task runApp(type: JavaExec) {
        "--module-path", javafxPath,
        "--add-modules", "javafx.controls,javafx.fxml"
    ]
-    
+    */
 }
