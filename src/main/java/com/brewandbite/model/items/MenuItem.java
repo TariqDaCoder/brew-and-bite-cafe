@@ -1,11 +1,10 @@
 package com.brewandbite.model.items;
 
 public abstract class MenuItem {
-
     //total price for the MenuItem
     private int id;
     private double basePrice;
-    private String name;
+    private String itemName;
     private String description;
 
     /**
@@ -16,7 +15,7 @@ public abstract class MenuItem {
      */
     public MenuItem(int id, String name, double basePrice, String description) {
         this.id = id;
-        this.name = name;
+        this.itemName = name;
         this.basePrice = basePrice;
         this.description = description;
     }
@@ -35,8 +34,8 @@ public abstract class MenuItem {
         return basePrice;
     }
 
-    public String getName() {
-        return name;
+    public String getItemName() {
+        return itemName;
     }
 
     public String getDescription() {
@@ -48,14 +47,14 @@ public abstract class MenuItem {
         this.basePrice = basePrice;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -77,7 +76,7 @@ public abstract class MenuItem {
         return "MenuItem{"
                 + "basePrice=" + basePrice
                 + ", id=" + id
-                + ", name='" + name + '\''
+                + ", name='" + itemName + '\''
                 + ", description='" + description + '\''
                 + '}';
     }

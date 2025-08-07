@@ -4,12 +4,44 @@ package com.brewandbite.model.items;
  * A specific pastry variation: Croissant (Butter or Chocolate).
  */
 public class Croissant extends Pastry {
-
     /**
      * The available croissant types.
      */
     public enum CroissantType {
-        BUTTER, CHOCOLATE
+        BUTTER(2.00, "Butter Croissant"), CHOCOLATE(2.25, "Chocolate Croissant");
+
+        @Override
+        public String toString() {
+            String croissantTypeString = " ";
+            switch(this) {
+                case BUTTER:
+                    croissantTypeString = "Butter";
+                break;
+                case CHOCOLATE:
+                    croissantTypeString = "Chocolate";
+                break;
+                default:
+                break;
+            }
+
+            return croissantTypeString;
+        }
+        
+        private final double cost;
+        private final String description;
+
+        CroissantType(double cost, String description) {
+            this.cost = cost;
+            this.description = description;
+        }
+
+        public double getCost() {
+            return this.cost;
+        }
+
+        public String getDescription() {
+            return this.description;
+        }
     }
 
     private final CroissantType type;
@@ -24,11 +56,11 @@ public class Croissant extends Pastry {
         super(
                 id,
                 // Display name
-                type == CroissantType.BUTTER ? "Butter Croissant" : "Chocolate Croissant",
+                type.toString(),
                 // Base price based on type
-                type == CroissantType.BUTTER ? 2.00 : 2.25,
+                type.getCost(),
                 // Description
-                (type == CroissantType.BUTTER ? "Butter Croissant" : "Chocolate Croissant")
+                type.getDescription()
         );
         this.type = type;
     }
