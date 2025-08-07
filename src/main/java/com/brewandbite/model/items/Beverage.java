@@ -3,7 +3,6 @@ package com.brewandbite.model.items;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import com.brewandbite.util.Customizable;
 
 public class Beverage extends MenuItem implements Customizable{
@@ -16,7 +15,6 @@ public class Beverage extends MenuItem implements Customizable{
             String description) {
         super(id, name, basePrice, description);
         this.drinkSize = Customization.SMALL;
-        //this.fullNameWithCustomizations = name;
     }
 
     //for customer view, so they can see the item name and the current
