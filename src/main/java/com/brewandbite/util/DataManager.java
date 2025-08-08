@@ -10,8 +10,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.brewandbite.model.inventory.Butter;
+import com.brewandbite.model.inventory.Chocolate;
+import com.brewandbite.model.inventory.CoffeeBeans;
+import com.brewandbite.model.inventory.Flour;
 import com.brewandbite.model.inventory.Ingredient;
-import com.brewandbite.model.items.Beverage;
+import com.brewandbite.model.inventory.Milk;
 import com.brewandbite.model.items.Coffee;
 import com.brewandbite.model.items.Coffee.CoffeeType;
 import com.brewandbite.model.items.Tea;
@@ -110,7 +114,7 @@ public class DataManager {
                 String description = (String) tea.get("description");
                 TeaType type = getTeaType(name);
 
-                // Create coffee
+                // Create tea
                 MenuItem newTea = new Tea(
                     nextId++,
                     type
@@ -204,14 +208,40 @@ public class DataManager {
      * Returns empty list on null.
      */
     public static List<Ingredient> loadAllIngredients() {
-        // Read the inventory wrapper object with ingredients array
-        Type inventoryType = new TypeToken<Map<String, List<Ingredient>>>() {}.getType();
-        Map<String, List<Ingredient>> inventoryData = loadFromJson("inventory.json", inventoryType);
+        // Read the menu wrapper object with beverages and pastries arrays
+        Type menuType = new TypeToken<Map<String, Object>>() {}.getType();
+        Map<String, Object> ingredientData = loadFromJson("inventory.json", menuType);
 
-        if (inventoryData == null || inventoryData.get("ingredients") == null) {
+        if (ingredientData == null) {
             return Collections.emptyList();
         }
 
-        return inventoryData.get("ingredients");
+        List<Ingredient> allIngredients = new ArrayList<>();
+
+        // Process ingredients
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> ingredients = (List<Map<String, Object>>) ingredientData.get("ingredients");
+        if (ingredients != null) {
+            for (Map<String, Object> ingredient : ingredients) {
+                String name = (String) ingredient.get("name");
+                int quantity = ((Number) ingredient.get("quantity")).intValue();
+
+                System.out.println(name + " " + Integer.toString(quantity));
+
+                if (name.equals("Milk")) {
+                    allIngredients.add(new Milk(quantity));
+                } else if (name.equals("Flour")) {
+                    allIngredients.add(new Flour(quantity));
+                } else if (name.equals("Coffee Beans")) {
+                    allIngredients.add(new CoffeeBeans(quantity));
+                } else if (name.equals("Chocolate")) {
+                    allIngredients.add(new Chocolate(quantity));
+                } else if (name.equals("Butter")) {
+                    allIngredients.add(new Butter(quantity));
+                }
+            }
+        }
+
+        return allIngredients;
     }
 }

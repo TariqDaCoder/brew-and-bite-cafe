@@ -1,5 +1,8 @@
 package com.brewandbite.model.items;
 
+import com.brewandbite.model.inventory.Butter;
+import com.brewandbite.model.inventory.Flour;
+
 /**
  * A specific pastry variation: Croissant (Butter or Chocolate).
  */
@@ -63,6 +66,9 @@ public class Croissant extends Pastry {
                 type.getDescription()
         );
         this.type = type;
+        
+        this.requiredIngredients.add(new Flour(10));
+        this.requiredIngredients.add(new Butter(5));
     }
 
     /**

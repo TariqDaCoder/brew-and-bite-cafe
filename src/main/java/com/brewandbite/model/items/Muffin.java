@@ -1,5 +1,9 @@
 package com.brewandbite.model.items;
 
+import com.brewandbite.model.inventory.Butter;
+import com.brewandbite.model.inventory.Flour;
+import com.brewandbite.model.inventory.Milk;
+
 /**
  * A specific pastry variation: Muffin (Blueberry or Chocolate-Chip).
  */
@@ -64,6 +68,10 @@ public class Muffin extends Pastry {
                 type.getDescription()
         );
         this.type = type;
+
+        this.requiredIngredients.add(new Flour(10));
+        this.requiredIngredients.add(new Butter(5));
+        this.requiredIngredients.add(new Milk(30));
     }
 
     /**
