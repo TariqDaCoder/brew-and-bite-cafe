@@ -55,6 +55,16 @@
       "name": "Blueberry Muffin",
       "basePrice": 2.0,
       "description": "Fresh blueberry muffin"
+    },
+    {
+      "name": "Chocolate-Chip Cookie",
+      "basePrice": 2.0,
+      "description": "A chocolate-chip cookie"
+    },
+    {
+      "name": "Oatmeal-Raisin Cookie",
+      "basePrice": 2.0,
+      "description": "A oatmeal-raisin cookie"
     }
   ]
 }

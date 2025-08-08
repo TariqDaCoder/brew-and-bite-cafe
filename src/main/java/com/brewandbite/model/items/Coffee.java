@@ -1,5 +1,8 @@
 package com.brewandbite.model.items;
 
+import com.brewandbite.model.inventory.Ingredient;
+import com.brewandbite.model.inventory.CoffeeBeans;
+
 //coffee beverage base class
 public class Coffee extends Beverage {
     public enum CoffeeType {
@@ -60,7 +63,11 @@ public class Coffee extends Beverage {
                 // Description
                 type.getDescription()
         );
+
         this.type = type;
+        
+        //initialize ingredients
+        this.requiredIngredients.add(new CoffeeBeans(10));
     }
 
     public CoffeeType getType() {

@@ -10,6 +10,8 @@ import com.brewandbite.model.items.Tea;
 import com.brewandbite.model.items.Tea.TeaType;
 import com.brewandbite.model.items.Coffee.CoffeeType;
 import com.brewandbite.model.items.Cookie.CookieType;
+import com.brewandbite.model.inventory.Ingredient;
+import com.brewandbite.model.inventory.IngredientManager;
 import com.brewandbite.model.items.Beverage;
 import com.brewandbite.model.orders.Order;
 import com.brewandbite.util.Customizable;
@@ -26,6 +28,7 @@ import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
 public class CustomerController {
+    private final IngredientManager ingredientManager;
     private final MenuItemFactory menuItemFactory;
     private final CustomerView view;
     private final ObservableList<MenuItem> menuItems;
@@ -35,6 +38,7 @@ public class CustomerController {
 
     public CustomerController(CustomerView view,
                               List<MenuItem> menu,
+                              List<Ingredient> inventory,
                               InMemoryQueue<Order> queue) {
         this.view = view;
         this.menuItems = FXCollections.observableArrayList(menu);
@@ -50,8 +54,13 @@ public class CustomerController {
         // this.menuItems.add(new Tea(1, TeaType.HERBAL));
         // this.menuItems.add(new Muffin(1, MuffinType.BLUEBERRY));
         // this.menuItems.add(new Muffin(1, MuffinType.CHOCOLATE_CHIP));
+        
+        for (Ingredient ingredient : inventory) {
+            System.out.println(ingredient);
+        }
 
-        menuItemFactory = new MenuItemFactory();
+        this.ingredientManager = new IngredientManager(inventory);
+        this.menuItemFactory = new MenuItemFactory();
 
         this.orderQueue = queue;
     }
@@ -68,8 +77,19 @@ public class CustomerController {
     }
 
     public void clearCart() {
+        //need to "give back" all the ingredients that were in the order, since we did not
+        //end up using them
+        for (MenuItem menuItem : cartItems) {
+            ingredientManager.addQuantityOfIngredientsFromSystem(menuItem.getRequiredIngredients());
+        }
+
         cartItems.clear();
-        //cartItemsToDisplay.clear();
+
+        view.outOfStockMessage.setText("");
+    }
+
+    public Boolean verifyWeCanAddItemToCartBasedOnStock(MenuItem item) {
+        return ingredientManager.verifyWeHaveIngredients(item.getRequiredIngredients());
     }
 
     //gets the selected MenuItem from the selected string that the Customer sees
@@ -101,8 +121,20 @@ public class CustomerController {
         view.addToOrder.setOnAction(e -> {
             try {
                 MenuItem sel = getSelectedItem(view.menuList, menuItems);
-                if (sel != null) {
+                Boolean haveEnoughIngredients = verifyWeCanAddItemToCartBasedOnStock(sel);
+                if ((sel != null) && haveEnoughIngredients) {
                     addSelectionToCart(sel);
+
+                    //if we successfully added, remove the used ingredients
+                    ingredientManager.removeQuantityOfIngredientsFromSystem(sel.getRequiredIngredients());
+
+                    view.outOfStockMessage.setText("");
+
+                    //debugging
+                    ingredientManager.printAllIngredientsInSystem();
+                } else if(!haveEnoughIngredients) {
+                    System.err.println("Do not have sufficient ingredients");
+                    view.outOfStockMessage.setText("We are out of stock of " + sel.getItemName() + "!");
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -115,6 +147,11 @@ public class CustomerController {
                 MenuItem sel = getSelectedItem(view.cartList, cartItems);
                 if (sel != null) {
                     removeFromOrder(sel);
+
+                    //put the ingredients back if they were not used
+                    ingredientManager.addQuantityOfIngredientsFromSystem(sel.getRequiredIngredients());
+
+                    view.outOfStockMessage.setText("");
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

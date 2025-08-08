@@ -1,5 +1,10 @@
 package com.brewandbite.model.items;
 
+import com.brewandbite.model.inventory.Butter;
+import com.brewandbite.model.inventory.Flour;
+import com.brewandbite.model.inventory.Ingredient;
+import com.brewandbite.model.inventory.Milk;
+
 /**
  * A specific pastry variation: Cookie (Chocolate-Chip or Oatmeal-Raisin).
  */
@@ -64,6 +69,10 @@ public class Cookie extends Pastry {
                 type.getDescription()
         );
         this.type = type;
+
+        this.requiredIngredients.add(new Flour(10));
+        this.requiredIngredients.add(new Butter(5));
+        this.requiredIngredients.add(new Milk(30));
     }
 
     /**

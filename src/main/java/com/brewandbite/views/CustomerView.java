@@ -27,6 +27,8 @@ public class CustomerView extends VBox {
     private static final String CUSTOMER_NAME_LABEL = "Customer Name:";
     private static final String MENU_LABEL = "Menu";
     private static final String YOUR_CART_LABEL = "Your Cart";
+    public static final String ITEM_ADDED_STATUS_LABEL = "";
+    public Label outOfStockMessage;
 
     public CustomerView() {
         setSpacing(15);
@@ -35,6 +37,7 @@ public class CustomerView extends VBox {
         Label customerNameHeader = new Label(CUSTOMER_NAME_LABEL);
         Label menuHeader = new Label(MENU_LABEL);
         Label cartHeader = new Label(YOUR_CART_LABEL);
+        outOfStockMessage = new Label(ITEM_ADDED_STATUS_LABEL);
 
         //make it so the user just sees the name (and customizations if applicable) of the menuItem
         //not the overridden toString() method
@@ -88,7 +91,7 @@ public class CustomerView extends VBox {
                 customerNameHeader, nameField,
                 menuHeader, menuList,
                 cartButtons,
-                cartHeader, cartList, orderButtons
+                cartHeader, cartList, outOfStockMessage, orderButtons
         );
     }
 }
