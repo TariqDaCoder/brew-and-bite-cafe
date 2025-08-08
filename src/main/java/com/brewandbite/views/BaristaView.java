@@ -16,6 +16,7 @@ public class BaristaView extends VBox {
     public final Button markInProgress = new Button("In Progress");
     public final Button markReady = new Button("Ready");
     public final Button refreshBtn = new Button("Refresh");
+    public final Button switchRoleButton = new Button("Switch Roles");
     public final HBox actionButtons = new HBox(10, markInProgress, markReady, refreshBtn);
     private static final String PENDING_ORDER_LABEL = "Pending Orders";
 
@@ -45,7 +46,7 @@ public class BaristaView extends VBox {
 
         getChildren().addAll(
                 pendingOrderHeader, pendingOrders,
-                actionButtons
+                actionButtons, switchRoleButton
         );
     }
 }
