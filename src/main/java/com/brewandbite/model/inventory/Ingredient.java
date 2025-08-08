@@ -1,11 +1,10 @@
 package com.brewandbite.model.inventory;
 
-public class Ingredient {
-
+public abstract class Ingredient {
     private String name;
     private int quantity;
-    // TODO: Create a specific type for unit instead of using generic "String" type
-    private String unit; // "grams", "ml", "pieces"
+    private IngredientUnit unit; // "grams", "ml", "pieces"
+    protected enum IngredientUnit {GRAMS, ML, PIECES};
 
     public String getName() {
         return name;
@@ -23,11 +22,11 @@ public class Ingredient {
         this.quantity = quantity;
     }
 
-    public String getUnit() {
+    public IngredientUnit getUnit() {
         return unit;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit(IngredientUnit unit) {
         this.unit = unit;
     }
 
@@ -42,9 +41,15 @@ public class Ingredient {
     @Override
     public String toString() {
         return "Ingredient{"
-                + "name='" + name + '\''
-                + ", quantity=" + quantity
-                + ", unit='" + unit + '\''
+                + "name='" + this.name + '\''
+                + ", quantity=" + this.quantity
+                + ", unit='" + this.unit + '\''
                 + '}';
+    }
+
+    Ingredient(String name, int quantity, IngredientUnit unit) {
+        this.name = name;
+        this.quantity = quantity;
+        this.unit = unit;
     }
 }

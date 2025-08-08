@@ -1,12 +1,22 @@
 package com.brewandbite.model.items;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+import com.brewandbite.model.inventory.Ingredient;
 
 public abstract class MenuItem {
-
     //total price for the MenuItem
     private int id;
     private double basePrice;
-    private String name;
+    private String itemName;
     private String description;
+
+    //need to incorporate the required ingredients; then we can check and
+    //reduce them from the system based on what ingredients are
+    //required in a MenuItem
+    //E.g butter croissant requires some quantity of butter and flour
+    //if we put it here we can check if we have the required ingredients
+    protected ArrayList<Ingredient> requiredIngredients;
 
     /**
      * @param id unique identifier for this item
@@ -16,9 +26,10 @@ public abstract class MenuItem {
      */
     public MenuItem(int id, String name, double basePrice, String description) {
         this.id = id;
-        this.name = name;
+        this.itemName = name;
         this.basePrice = basePrice;
         this.description = description;
+        this.requiredIngredients = new ArrayList<>();
     }
 
     //each menu item must implement this,
@@ -35,12 +46,16 @@ public abstract class MenuItem {
         return basePrice;
     }
 
-    public String getName() {
-        return name;
+    public String getItemName() {
+        return itemName;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public ArrayList<Ingredient> getRequiredIngredients() {
+        return this.requiredIngredients;
     }
 
     // Setters
@@ -48,14 +63,14 @@ public abstract class MenuItem {
         this.basePrice = basePrice;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -77,7 +92,7 @@ public abstract class MenuItem {
         return "MenuItem{"
                 + "basePrice=" + basePrice
                 + ", id=" + id
-                + ", name='" + name + '\''
+                + ", name='" + itemName + '\''
                 + ", description='" + description + '\''
                 + '}';
     }

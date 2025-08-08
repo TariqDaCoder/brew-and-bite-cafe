@@ -10,8 +10,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.brewandbite.model.inventory.Butter;
+import com.brewandbite.model.inventory.Chocolate;
+import com.brewandbite.model.inventory.CoffeeBeans;
+import com.brewandbite.model.inventory.Flour;
 import com.brewandbite.model.inventory.Ingredient;
-import com.brewandbite.model.items.Beverage;
+import com.brewandbite.model.inventory.Milk;
+import com.brewandbite.model.items.Coffee;
+import com.brewandbite.model.items.Coffee.CoffeeType;
+import com.brewandbite.model.items.Tea;
+import com.brewandbite.model.items.Tea.TeaType;
 import com.brewandbite.model.items.Cookie;
 import com.brewandbite.model.items.Croissant;
 import com.brewandbite.model.items.MenuItem;
@@ -78,22 +86,42 @@ public class DataManager {
 
         // Process beverages
         @SuppressWarnings("unchecked")
-        List<Map<String, Object>> beverages = (List<Map<String, Object>>) menuData.get("beverages");
-        if (beverages != null) {
-            for (Map<String, Object> bev : beverages) {
-                String name = (String) bev.get("name");
-                double basePrice = ((Number) bev.get("basePrice")).doubleValue();
-                String description = (String) bev.get("description");
+        List<Map<String, Object>> coffees = (List<Map<String, Object>>) menuData.get("coffees");
+        if (coffees != null) {
+            for (Map<String, Object> coffee : coffees) {
+                String name = (String) coffee.get("name");
+                // double basePrice = ((Number) coffee.get("basePrice")).doubleValue();
+                String description = (String) coffee.get("description");
+                CoffeeType type = getCoffeeType(name);
 
-                // Create beverage with default medium size
-                Beverage beverage = new Beverage(
-                        nextId++,
-                        name,
-                        basePrice,
-                        description,
-                        Beverage.DrinkSize.MEDIUM
+                // Create coffee
+                MenuItem newCoffee = new Coffee(
+                    nextId++,
+                    type
                 );
-                allItems.add(beverage);
+                newCoffee.setDescription(description);
+                
+                allItems.add(newCoffee);
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> teas = (List<Map<String, Object>>) menuData.get("teas");
+        if (teas != null) {
+            for (Map<String, Object> tea : teas) {
+                String name = (String) tea.get("name");
+                // double basePrice = ((Number) coffee.get("basePrice")).doubleValue();
+                String description = (String) tea.get("description");
+                TeaType type = getTeaType(name);
+
+                // Create tea
+                MenuItem newTea = new Tea(
+                    nextId++,
+                    type
+                );
+                newTea.setDescription(description);
+                
+                allItems.add(newTea);
             }
         }
 
@@ -113,6 +141,36 @@ public class DataManager {
         }
 
         return allItems;
+    }
+
+    //get the type of tea from the name
+    private static TeaType getTeaType(String typeStr) {
+        TeaType teaTypeToRet = TeaType.BLACK;
+        if (typeStr.equals("Black Coffee")) {
+            teaTypeToRet = TeaType.BLACK;
+        } else if (typeStr.equals("Green Tea")) {
+            teaTypeToRet = TeaType.GREEN;
+        } else if (typeStr.equals("Herbal Tea")) {
+            teaTypeToRet = TeaType.HERBAL;
+        }
+        
+        return teaTypeToRet;
+    }
+
+    //get the type of coffee from the name
+    private static CoffeeType getCoffeeType(String typeStr) {
+        CoffeeType coffeeTypeToRet = CoffeeType.BLACK;
+        if (typeStr.equals("Black Coffee")) {
+            coffeeTypeToRet = CoffeeType.BLACK;
+        } else if (typeStr.equals("Latte")) {
+            coffeeTypeToRet = CoffeeType.LATTE;
+        } else if (typeStr.equals("Cappuccino")) {
+            coffeeTypeToRet = CoffeeType.CAPPUCCINO;
+        } else if (typeStr.equals("Espresso")) {
+            coffeeTypeToRet = CoffeeType.ESPRESSO;
+        }
+        
+        return coffeeTypeToRet;
     }
 
     /**
@@ -150,14 +208,40 @@ public class DataManager {
      * Returns empty list on null.
      */
     public static List<Ingredient> loadAllIngredients() {
-        // Read the inventory wrapper object with ingredients array
-        Type inventoryType = new TypeToken<Map<String, List<Ingredient>>>() {}.getType();
-        Map<String, List<Ingredient>> inventoryData = loadFromJson("inventory.json", inventoryType);
+        // Read the menu wrapper object with beverages and pastries arrays
+        Type menuType = new TypeToken<Map<String, Object>>() {}.getType();
+        Map<String, Object> ingredientData = loadFromJson("inventory.json", menuType);
 
-        if (inventoryData == null || inventoryData.get("ingredients") == null) {
+        if (ingredientData == null) {
             return Collections.emptyList();
         }
 
-        return inventoryData.get("ingredients");
+        List<Ingredient> allIngredients = new ArrayList<>();
+
+        // Process ingredients
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> ingredients = (List<Map<String, Object>>) ingredientData.get("ingredients");
+        if (ingredients != null) {
+            for (Map<String, Object> ingredient : ingredients) {
+                String name = (String) ingredient.get("name");
+                int quantity = ((Number) ingredient.get("quantity")).intValue();
+
+                System.out.println(name + " " + Integer.toString(quantity));
+
+                if (name.equals("Milk")) {
+                    allIngredients.add(new Milk(quantity));
+                } else if (name.equals("Flour")) {
+                    allIngredients.add(new Flour(quantity));
+                } else if (name.equals("Coffee Beans")) {
+                    allIngredients.add(new CoffeeBeans(quantity));
+                } else if (name.equals("Chocolate")) {
+                    allIngredients.add(new Chocolate(quantity));
+                } else if (name.equals("Butter")) {
+                    allIngredients.add(new Butter(quantity));
+                }
+            }
+        }
+
+        return allIngredients;
     }
 }

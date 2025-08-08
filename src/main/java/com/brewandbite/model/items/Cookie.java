@@ -1,5 +1,10 @@
 package com.brewandbite.model.items;
 
+import com.brewandbite.model.inventory.Butter;
+import com.brewandbite.model.inventory.Flour;
+import com.brewandbite.model.inventory.Ingredient;
+import com.brewandbite.model.inventory.Milk;
+
 /**
  * A specific pastry variation: Cookie (Chocolate-Chip or Oatmeal-Raisin).
  */
@@ -9,7 +14,40 @@ public class Cookie extends Pastry {
      * The available cookie types.
      */
     public enum CookieType {
-        CHOCOLATE_CHIP, OATMEAL_RAISIN
+        CHOCOLATE_CHIP(1.75, "Chocolate-Chip Cookie"), OATMEAL_RAISIN(1.75, "Oatmeal-Raisin Cookie");
+
+        @Override
+        public String toString() {
+            String cookieTypeString = " ";
+            switch(this) {
+                case CHOCOLATE_CHIP:
+                    cookieTypeString = "Chocolate-Chip Cookie";
+                break;
+                case OATMEAL_RAISIN:
+                    cookieTypeString = "Oatmeal-Raisin Cookie";
+                break;
+                default:
+                break;
+            }
+
+            return cookieTypeString;
+        }
+        
+        private final double cost;
+        private final String description;
+
+        CookieType(double cost, String description) {
+            this.cost = cost;
+            this.description = description;
+        }
+
+        public double getCost() {
+            return this.cost;
+        }
+
+        public String getDescription() {
+            return this.description;
+        }
     }
 
     private final CookieType type;
@@ -24,13 +62,17 @@ public class Cookie extends Pastry {
         super(
                 id,
                 // Display name based on type
-                (type == CookieType.CHOCOLATE_CHIP ? "Chocolate-Chip Cookie" : "Oatmeal-Raisin Cookie"),
+                type.toString(),
                 // Base price: flat $1.75
-                1.75,
+                type.getCost(),
                 // Description
-                (type == CookieType.CHOCOLATE_CHIP ? "Chocolate-Chip Cookie" : "Oatmeal-Raisin Cookie")
+                type.getDescription()
         );
         this.type = type;
+
+        this.requiredIngredients.add(new Flour(10));
+        this.requiredIngredients.add(new Butter(5));
+        this.requiredIngredients.add(new Milk(30));
     }
 
     /**

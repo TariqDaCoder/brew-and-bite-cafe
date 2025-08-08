@@ -7,6 +7,7 @@ import com.brewandbite.controller.BaristaController;
 import com.brewandbite.controller.CustomerController;
 import com.brewandbite.controller.ManagerController;
 import com.brewandbite.model.inventory.Ingredient;
+import com.brewandbite.model.inventory.IngredientManager;
 import com.brewandbite.model.items.MenuItem;
 import com.brewandbite.model.orders.Order;
 import com.brewandbite.util.DataManager;
@@ -28,11 +29,17 @@ import javafx.scene.control.Label;
 
 public class BrewAndBiteApp extends Application {
 
+
     @Override
     public void start(Stage primaryStage) {
         // 1) Load and flatten data
         List<MenuItem> menu = DataManager.loadAllMenuItems();
         List<Ingredient> inventory = DataManager.loadAllIngredients();
+        
+        System.out.println("Ingredients In Inventory: " );
+        for (Ingredient ingredient : inventory) {
+            System.out.println(ingredient.toString());
+        }
 
         // 2) Shared queue for orders
         InMemoryQueue<Order> orderQueue = new InMemoryQueue<>();
@@ -63,7 +70,7 @@ public class BrewAndBiteApp extends Application {
             default -> {
                 CustomerView cv = new CustomerView();
                 cv.switchRoleButton.setOnAction(c -> switchRole(primaryStage, menu, inventory, orderQueue));
-                CustomerController cc = new CustomerController(cv, menu, orderQueue);
+                CustomerController cc = new CustomerController(cv, menu, inventory, orderQueue);
                 cc.initialize();
                 Scene scene = new Scene(cv, 800, 600);
                 primaryStage.setScene(scene);
@@ -136,7 +143,9 @@ public class BrewAndBiteApp extends Application {
 		lStage.show();
     }
 
+
     public static void main(String[] args) {
         launch(args);
     }
 }
+
