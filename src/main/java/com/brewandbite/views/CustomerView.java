@@ -28,6 +28,8 @@ public class CustomerView extends VBox {
     private static final String MENU_LABEL = "Menu";
     private static final String YOUR_CART_LABEL = "Your Cart";
     public static final String ITEM_ADDED_STATUS_LABEL = "";
+    public static final String totalPriceStr = "Total Price: $";
+    public Label totalPriceDisplay;
     public Label outOfStockMessage;
 
     public CustomerView() {
@@ -38,6 +40,7 @@ public class CustomerView extends VBox {
         Label menuHeader = new Label(MENU_LABEL);
         Label cartHeader = new Label(YOUR_CART_LABEL);
         outOfStockMessage = new Label(ITEM_ADDED_STATUS_LABEL);
+        totalPriceDisplay = new Label(totalPriceStr); 
 
         //make it so the user just sees the name (and customizations if applicable) of the menuItem
         //not the overridden toString() method
@@ -92,6 +95,7 @@ public class CustomerView extends VBox {
                 menuHeader, menuList,
                 cartButtons,
                 cartHeader, cartList,
+                totalPriceDisplay,
                 orderButtons,//put switch role button in order buttons so all buttons in a row
                 outOfStockMessage
         );
