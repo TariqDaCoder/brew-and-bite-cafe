@@ -94,7 +94,7 @@ public class CustomerView extends VBox {
                 orderButtons,
                 switchRoleButton,
                 cartButtons,
-                cartHeader, cartList, outOfStockMessage, orderButtons
+                cartHeader, cartList, outOfStockMessage
         );
     }
 }
