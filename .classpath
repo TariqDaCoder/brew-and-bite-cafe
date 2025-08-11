@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-24"/>
 	<classpathentry kind="src" output="bin/main" path="src/main/resources">
 		<attributes>
 			<attribute name="gradle_scope" value="main"/>
@@ -13,84 +12,7 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-fxml/21/4a1cd270e1ae03ae73110eb68622afd457c6f903/javafx-fxml-21-win.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/21/76e295d84578a3d9688e092aae3f2ff1cf3e83a9/javafx-controls-21-win.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10.1/b3add478d4382b78ea20b1671390a858002feb6c/gson-2.10.1.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-graphics/21/8083d97ea236079c82cf8e3463b62990340346d4/javafx-graphics-21-win.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/21/a7e334fbb619859e1010cad06ddcf16e774c87a0/javafx-base-21-win.jar">
-		<attributes>
-			<attribute name="gradle_used_by_scope" value="main,test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.9.3/9e2a4bf6016a1975f408a73523392875cff7c26f/junit-jupiter-params-5.9.3.jar">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="gradle_used_by_scope" value="test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.9.3/815818ad6ffcc8d320d8fbdf3d748c753cf83201/junit-jupiter-api-5.9.3.jar">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="gradle_used_by_scope" value="test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.9.3/36b2e26a90c41603be7f0094bee80e3f8a2cd4d4/junit-platform-commons-1.9.3.jar">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="gradle_used_by_scope" value="test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.9.3/72e840501e1550e9799c9a5cc9483d7d6b29e0ba/junit-jupiter-5.9.3.jar">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="gradle_used_by_scope" value="test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.2.0/28c11eb91f9b6d8e200631d46e20a7f407f2a046/opentest4j-1.2.0.jar">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="gradle_used_by_scope" value="test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.2/a231e0d844d2721b0fa1b238006d15c6ded6842a/apiguardian-api-1.1.2.jar">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="gradle_used_by_scope" value=""/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.9.3/355322b03bf39306a183162cd06626c206f0286b/junit-jupiter-engine-5.9.3.jar">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="gradle_used_by_scope" value="test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.9.3/485650bfe2a2f39b606a6ca013285afda2eaee79/junit-platform-launcher-1.9.3.jar">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="gradle_used_by_scope" value="test"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="c:/Users/ander/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.9.3/8616734a190f8d307376aeb7353dba0a2c037a09/junit-platform-engine-1.9.3.jar">
-		<attributes>
-			<attribute name="test" value="true"/>
-			<attribute name="gradle_used_by_scope" value="test"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-24/"/>
+	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

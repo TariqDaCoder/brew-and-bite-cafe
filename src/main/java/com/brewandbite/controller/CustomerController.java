@@ -1,30 +1,23 @@
 package com.brewandbite.controller;
 
 import java.util.List;
-import com.brewandbite.model.items.Cookie;
-import com.brewandbite.model.items.Coffee;
-import com.brewandbite.model.items.MenuItem;
-import com.brewandbite.model.items.Muffin;
-import com.brewandbite.model.items.Muffin.MuffinType;
-import com.brewandbite.model.items.Tea;
-import com.brewandbite.model.items.Tea.TeaType;
-import com.brewandbite.model.items.Coffee.CoffeeType;
-import com.brewandbite.model.items.Cookie.CookieType;
+
 import com.brewandbite.model.inventory.Ingredient;
-import com.brewandbite.model.inventory.IngredientManager;
 import com.brewandbite.model.items.Beverage;
+import com.brewandbite.model.items.MenuItem;
 import com.brewandbite.model.orders.Order;
 import com.brewandbite.util.Customizable;
 import com.brewandbite.util.InMemoryQueue;
+import com.brewandbite.util.IngredientManager;
+import com.brewandbite.util.MenuItemFactory;
 import com.brewandbite.views.CustomerView;
 import com.brewandbite.views.CustomizationView;
-import com.brewandbite.util.MenuItemFactory;
 
-import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.scene.Node;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 public class CustomerController {
@@ -125,6 +118,9 @@ public class CustomerController {
                 if ((sel != null) && haveEnoughIngredients) {
                     addSelectionToCart(sel);
 
+                    System.out.println("✅ Added to cart: " + sel.getItemName() + " - $" + sel.calculatePrice());
+                    System.out.println("📦 Cart now has " + cartItems.size() + " items");
+
                     //if we successfully added, remove the used ingredients
                     ingredientManager.removeQuantityOfIngredientsFromSystem(sel.getRequiredIngredients());
 
@@ -133,10 +129,12 @@ public class CustomerController {
                     //debugging
                     ingredientManager.printAllIngredientsInSystem();
                 } else if(!haveEnoughIngredients) {
+                    System.out.println("❌ No item selected to add to cart");
                     System.err.println("Do not have sufficient ingredients");
                     view.outOfStockMessage.setText("We are out of stock of " + sel.getItemName() + "!");
                 }
             } catch (Exception ex) {
+                System.out.println("🚫 Error adding item to cart: " + ex.getMessage());
                 ex.printStackTrace();
             }
         });
@@ -173,22 +171,22 @@ public class CustomerController {
         //end of order manipulation--------------------------
 
         // 2) Place Order → add selected item to cart
-        view.placeOrder.setOnAction(e -> {
-            try {
-                MenuItem sel = view.menuList.getSelectionModel().getSelectedItem();
-                if (sel != null) {
-                    //cartItems.add(sel);
-                    addSelectionToCart(sel);
-                    System.out.println("✅ Added to cart: " + sel.getItemName() + " - $" + sel.calculatePrice());
-                    System.out.println("📦 Cart now has " + cartItems.size() + " items");
-                } else {
-                    System.out.println("❌ No item selected to add to cart");
-                }
-            } catch (Exception ex) {
-                System.out.println("🚫 Error adding item to cart: " + ex.getMessage());
-                ex.printStackTrace();
-            }
-        });
+        // view.placeOrder.setOnAction(e -> {
+        //     try {
+        //         MenuItem sel = view.menuList.getSelectionModel().getSelectedItem();
+        //         if (sel != null) {
+        //             //cartItems.add(sel);
+        //             addSelectionToCart(sel);
+        //             System.out.println("✅ Added to cart: " + sel.getItemName() + " - $" + sel.calculatePrice());
+        //             System.out.println("📦 Cart now has " + cartItems.size() + " items");
+        //         } else {
+        //             System.out.println("❌ No item selected to add to cart");
+        //         }
+        //     } catch (Exception ex) {
+        //         System.out.println("🚫 Error adding item to cart: " + ex.getMessage());
+        //         ex.printStackTrace();
+        //     }
+        // });
 
         // 3) Clear Order → empty the cart
         view.clearOrder.setOnAction(e -> {
