@@ -1,7 +1,14 @@
-package com.brewandbite.model.inventory;
+package com.brewandbite.util;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.brewandbite.model.inventory.Butter;
+import com.brewandbite.model.inventory.Chocolate;
+import com.brewandbite.model.inventory.CoffeeBeans;
+import com.brewandbite.model.inventory.Flour;
+import com.brewandbite.model.inventory.Ingredient;
+import com.brewandbite.model.inventory.Milk;
 
 //IngredientManagers handles functionality
 //related to monitoring and changing ingredient
