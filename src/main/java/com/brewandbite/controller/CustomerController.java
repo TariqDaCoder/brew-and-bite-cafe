@@ -105,6 +105,18 @@ public class CustomerController {
         currentStage.show();
     }
 
+    public void updateTheTotalPrice() {
+            // Build the order
+            String customerName = view.nameField.getText().trim();
+            Order order = new Order(nextOrderId++, customerName);
+
+            // Add items and calculate total
+            cartItems.forEach(order::addItem);
+
+            //update the order total price
+            view.totalPriceDisplay.setText(view.totalPriceStr + order.getTotalPrice());
+    }
+
     public void initialize() {
         // 1) Populate menu & cart
         view.menuList.setItems(menuItems);
@@ -123,6 +135,8 @@ public class CustomerController {
 
                     //if we successfully added, remove the used ingredients
                     ingredientManager.removeQuantityOfIngredientsFromSystem(sel.getRequiredIngredients());
+                    
+                    updateTheTotalPrice();
 
                     view.outOfStockMessage.setText("");
 
@@ -150,6 +164,8 @@ public class CustomerController {
                     ingredientManager.addQuantityOfIngredientsFromSystem(sel.getRequiredIngredients());
 
                     view.outOfStockMessage.setText("");
+
+                    updateTheTotalPrice();
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
