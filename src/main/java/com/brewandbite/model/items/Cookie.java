@@ -2,7 +2,6 @@ package com.brewandbite.model.items;
 
 import com.brewandbite.model.inventory.Butter;
 import com.brewandbite.model.inventory.Flour;
-import com.brewandbite.model.inventory.Ingredient;
 import com.brewandbite.model.inventory.Milk;
 
 /**
