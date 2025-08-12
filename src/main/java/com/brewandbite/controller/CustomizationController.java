@@ -1,15 +1,22 @@
 package com.brewandbite.controller;
 import com.brewandbite.model.items.Beverage;
+import com.brewandbite.model.items.MenuItem;
 import com.brewandbite.util.Customizable.Customization;
 import com.brewandbite.views.CustomizationView;
+
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
 import javafx.stage.Stage;
 
 public class CustomizationController {
+    public final ListView<MenuItem> customerViewCartList;
     public final CustomizationView customizationView;
 
-    public CustomizationController(CustomizationView customizationView) {
+    public CustomizationController(CustomizationView customizationView, ListView<MenuItem> customerCartList) {
         this.customizationView = customizationView;
+        this.customerViewCartList = customerCartList;
     }
 
     public void addCustomization(Customization selectedCustomization) {
@@ -52,9 +59,18 @@ public class CustomizationController {
 
         customizationView.backToOrder.setOnAction(e -> {
             try {
-                //update 
-                // customizationView.
-
+                //update customizationView with the new customizations
+                int indexOfChangedItem = 0;
+                ObservableList<MenuItem> copy = customerViewCartList.getItems();
+                for(int i = 0; i < copy.size(); i++) {
+                    if(copy.get(i) == customizationView.selectedBeverage) {
+                        indexOfChangedItem = i;
+                        customerViewCartList.getItems().set(indexOfChangedItem, customizationView.selectedBeverage);
+                        break;
+                    }
+                }
+                
+                
                 //return to the customer view
                 Stage currentStage = (Stage)((Node) e.getSource()).getScene().getWindow();
                 currentStage.setScene(customizationView.customerView);

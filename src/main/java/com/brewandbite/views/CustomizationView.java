@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 
 public class CustomizationView extends VBox {
     public Scene customerView;
+
     public Beverage selectedBeverage;
     public final ListView<Beverage.Customization> possibleItemCustomizations = new ListView<>();
     public final ListView<MenuItem> selectedItem = new ListView<>();
@@ -24,9 +25,9 @@ public class CustomizationView extends VBox {
     private static final String CUSTOMIZATION_MENU_LABEL = "Customizations";
     private static final String SELECTED_ITEM_LABEL = "Your Item";
 
-    public CustomizationView() {
+    public CustomizationView(ListView<MenuItem> customerCartList) {
         //wire up the controller to this view
-        CustomizationController customizationController = new CustomizationController(this);
+        CustomizationController customizationController = new CustomizationController(this, customerCartList);
         customizationController.initialize();
 
         setSpacing(15);
@@ -70,8 +71,8 @@ public class CustomizationView extends VBox {
             customizationLabel,
             possibleItemCustomizations,
             selectedItemLabel,
-                selectedItem,
-                customizationButtons
+            selectedItem,
+            customizationButtons
         );
     }
 }
