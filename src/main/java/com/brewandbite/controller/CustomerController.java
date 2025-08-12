@@ -66,7 +66,12 @@ public class CustomerController {
     }
 
     public void removeFromOrder(MenuItem sel) {
-        cartItems.remove(sel);
+        for(int i = 0; i < cartItems.size(); i++) {
+            if (cartItems.get(i) == sel) {
+                cartItems.remove(i);
+                return;//only remove the one we want
+            }
+        }
     }
 
     public void clearCart() {
@@ -93,7 +98,7 @@ public class CustomerController {
 
     public void goToCustomizationScene(Stage currentStage, MenuItem selectedItem) {
         System.err.println("test");        
-        CustomizationView customizationView = new CustomizationView();
+        CustomizationView customizationView = new CustomizationView(view.cartList);
         Scene scene = new Scene(customizationView, 800, 600);
 
         //add the menu item they want to customize
