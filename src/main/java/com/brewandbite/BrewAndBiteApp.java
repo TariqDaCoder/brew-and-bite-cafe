@@ -11,7 +11,6 @@ import com.brewandbite.model.items.MenuItem;
 import com.brewandbite.model.orders.Order;
 import com.brewandbite.util.DataManager;
 import com.brewandbite.util.InMemoryQueue;
-import com.brewandbite.util.IngredientManager;
 import com.brewandbite.views.BaristaView;
 import com.brewandbite.views.CustomerView;
 import com.brewandbite.views.ManagerView;

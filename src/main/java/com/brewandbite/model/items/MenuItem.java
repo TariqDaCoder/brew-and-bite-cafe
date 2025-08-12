@@ -1,5 +1,4 @@
 package com.brewandbite.model.items;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import com.brewandbite.model.inventory.Ingredient;
@@ -33,8 +32,8 @@ public abstract class MenuItem {
     }
 
     //each menu item must implement this,
-    //abstrace because the way we compute the
-    //total price different menu items can vary
+    //abstract because the way we compute the
+    //total price of different menu items can vary
     public abstract double calculatePrice();
 
     // Getters

@@ -1,13 +1,11 @@
 package com.brewandbite.controller;
-import com.brewandbite.model.items.Beverage;
 import com.brewandbite.model.items.MenuItem;
 import com.brewandbite.util.Customizable.Customization;
 import com.brewandbite.views.CustomizationView;
-
 import javafx.collections.ObservableList;
+
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
 import javafx.stage.Stage;
 
 public class CustomizationController {

@@ -1,6 +1,5 @@
 package com.brewandbite.model.items;
 
-//coffee beverage base class
 public class Tea extends Beverage {
     public enum TeaType {
         BLACK(2.50, "A black tea"), 
